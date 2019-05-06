@@ -1,17 +1,17 @@
 import {Component, ProviderMap} from '@loopback/core';
-import {AuthorisatonBindings} from './keys';
-import {AuthoriseActionProvider} from './providers/authorisation-action.provider';
-import {AuthorisationMetadataProvider} from './providers/authorisation-metadata.provider';
+import {AuthorizatonBindings} from './keys';
+import {AuthorizeActionProvider} from './providers/authorization-action.provider';
+import {AuthorizationMetadataProvider} from './providers/authorization-metadata.provider';
 import {UserPermissionsProvider} from './providers/user-permissions.provider';
 
-export class AuthorisationComponent implements Component {
+export class AuthorizationComponent implements Component {
   providers?: ProviderMap;
 
   constructor() {
     this.providers = {
-      [AuthorisatonBindings.AUTHORISE_ACTION.key]: AuthoriseActionProvider,
-      [AuthorisatonBindings.METADATA.key]: AuthorisationMetadataProvider,
-      [AuthorisatonBindings.USER_PERMISSIONS.key]: UserPermissionsProvider,
+      [AuthorizatonBindings.AUTHORIZE_ACTION.key]: AuthorizeActionProvider,
+      [AuthorizatonBindings.METADATA.key]: AuthorizationMetadataProvider,
+      [AuthorizatonBindings.USER_PERMISSIONS.key]: UserPermissionsProvider,
     };
   }
 }

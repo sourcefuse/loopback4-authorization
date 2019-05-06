@@ -7,7 +7,7 @@
     "loopback",
     "loopback-next",
     "authorization",
-    "authorisation"
+    "authorization"
   ],
   "main": "index.js",
   "engines": {

@@ -1,22 +1,22 @@
 import {Getter, inject, Provider} from '@loopback/context';
 
-import {AuthorisatonBindings} from '../keys';
-import {AuthorisationMetadata, AuthoriseFn} from '../types';
+import {AuthorizatonBindings} from '../keys';
+import {AuthorizationMetadata, AuthorizeFn} from '../types';
 
 import {intersection} from 'lodash';
 
-export class AuthoriseActionProvider implements Provider<AuthoriseFn> {
+export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
   constructor(
-    @inject.getter(AuthorisatonBindings.METADATA)
-    private readonly getMetadata: Getter<AuthorisationMetadata>,
+    @inject.getter(AuthorizatonBindings.METADATA)
+    private readonly getMetadata: Getter<AuthorizationMetadata>,
   ) {}
 
-  value(): AuthoriseFn {
+  value(): AuthorizeFn {
     return response => this.action(response);
   }
 
   async action(userPermissions: string[]): Promise<boolean> {
-    const metadata: AuthorisationMetadata = await this.getMetadata();
+    const metadata: AuthorizationMetadata = await this.getMetadata();
     if (!metadata) {
       return false;
     } else if (metadata.permissions.indexOf('*') === 0) {

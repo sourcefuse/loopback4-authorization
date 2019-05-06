@@ -1,7 +1,7 @@
 /**
- * Authorise action method interface
+ * Authorize action method interface
  */
-export interface AuthoriseFn {
+export interface AuthorizeFn {
   // userPermissions - Array of permission keys granted to the user
   // This is actually a union of permissions picked up based on role
   // attached to the user and allowed permissions at specific user level
@@ -9,9 +9,9 @@ export interface AuthoriseFn {
 }
 
 /**
- * Authorisation metadata interface for the method decorator
+ * Authorization metadata interface for the method decorator
  */
-export interface AuthorisationMetadata {
+export interface AuthorizationMetadata {
   // Array of permissions required at the method level.
   // User need to have at least one of these to access the API method.
   permissions: any[];

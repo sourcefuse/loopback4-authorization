@@ -4,19 +4,18 @@
 
 ## Install
 
-```
+```sh
 npm install lb4-authorization
 ```
 
 ## Usage
 
-In order to use the above component into our REST API application, we have a few
-more steps to go.
+In order to use this component into your LoopBack application, please follow below steps.
 
 - Add component to application.
 
 ```ts
-this.component(AuthenticationComponent);
+this.component(AuthorizationComponent);
 ```
 
 - Add permissions array to the role model.
@@ -33,7 +32,7 @@ export class Role extends Entity {
   @property.array(String, {
     required: true,
   })
-  permissions: PermissionKey[];
+  permissions: string[];
 
   constructor(data?: Partial<Role>) {
     super(data);
