@@ -5,7 +5,7 @@
 ## Install
 
 ```sh
-npm install lb4-authorization
+npm install loopback4-authorization
 ```
 
 ## Usage
@@ -153,3 +153,7 @@ async create(@requestBody() role: Role): Promise<Role> {
 
 This endpoint will only be accessible if logged in user has permission
 'CreateRoles'.
+
+## License
+
+[MIT](https://github.com/sourcefuse/loopback4-authorization/blob/master/LICENSE)

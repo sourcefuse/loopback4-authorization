@@ -1,13 +1,13 @@
 {
-  "name": "lb4-authorization",
+  "name": "loopback4-authorization",
   "version": "1.0.0",
-  "description": "An authorization component for loopback-next applications",
+  "description": "An authorization extension for loopback-next applications",
   "keywords": [
     "loopback-extension",
     "loopback",
     "loopback-next",
     "authorization",
-    "authorization"
+    "authorisation"
   ],
   "main": "index.js",
   "engines": {
@@ -34,8 +34,8 @@
   "repository": {
     "type": "git"
   },
-  "author": "",
-  "license": "",
+  "author": "Sourcefuse",
+  "license": "MIT",
   "files": [
     "README.md",
     "index.js",
