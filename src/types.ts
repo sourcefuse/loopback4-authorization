@@ -14,7 +14,7 @@ export interface AuthorizeFn {
 export interface AuthorizationMetadata {
   // Array of permissions required at the method level.
   // User need to have at least one of these to access the API method.
-  permissions: any[];
+  permissions: string[];
 }
 
 /**
@@ -23,7 +23,7 @@ export interface AuthorizationMetadata {
  */
 export interface UserPermission<T> {
   permission: T;
-  is_allowed: boolean;
+  allowed: boolean;
 }
 
 /**

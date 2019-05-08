@@ -7,15 +7,15 @@ import {AuthorizeFn, AuthorizationMetadata, UserPermissionsFn} from './types';
  */
 export namespace AuthorizatonBindings {
   export const AUTHORIZE_ACTION = BindingKey.create<AuthorizeFn>(
-    'userAuthorization.actions.authorize',
+    'sf.userAuthorization.actions.authorize',
   );
 
   export const METADATA = BindingKey.create<AuthorizationMetadata | undefined>(
-    'userAuthorization.operationMetadata',
+    'sf.userAuthorization.operationMetadata',
   );
 
   export const USER_PERMISSIONS = BindingKey.create<UserPermissionsFn<string>>(
-    'userAuthorization.actions.userPermissions',
+    'sf.userAuthorization.actions.userPermissions',
   );
 }
 

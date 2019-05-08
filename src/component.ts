@@ -1,4 +1,5 @@
 import {Component, ProviderMap} from '@loopback/core';
+
 import {AuthorizatonBindings} from './keys';
 import {AuthorizeActionProvider} from './providers/authorization-action.provider';
 import {AuthorizationMetadataProvider} from './providers/authorization-metadata.provider';

@@ -20,13 +20,10 @@ export class UserPermissionsProvider
     perms = perms.concat(rolePermissions);
     // Now update permissions based on user permissions
     userPermissions.forEach((userPerm: UserPermission<string>) => {
-      if (userPerm.is_allowed && perms.indexOf(userPerm.permission) < 0) {
+      if (userPerm.allowed && perms.indexOf(userPerm.permission) < 0) {
         // Add permission if it is not part of role but allowed to user
         perms.push(userPerm.permission);
-      } else if (
-        !userPerm.is_allowed &&
-        perms.indexOf(userPerm.permission) >= 0
-      ) {
+      } else if (!userPerm.allowed && perms.indexOf(userPerm.permission) >= 0) {
         // Remove permission if it is disallowed for user
         perms.splice(perms.indexOf(userPerm.permission), 1);
       }
