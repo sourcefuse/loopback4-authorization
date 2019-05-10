@@ -1,6 +1,6 @@
 {
   "name": "loopback4-authorization",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An authorization extension for loopback-next applications",
   "keywords": [
     "loopback-extension",
