@@ -18,6 +18,20 @@ export interface AuthorizationMetadata {
 }
 
 /**
+ * Permissions interface to be implemented by models
+ */
+export interface Permissions<T> {
+  permissions: T[];
+}
+
+/**
+ * Override permissions at user level
+ */
+export interface UserPermissionsOverride<T> {
+  permissions: UserPermission<T>[];
+}
+
+/**
  * User Permission model
  * used for explicit allow/deny any permission at user level
  */

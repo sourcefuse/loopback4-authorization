@@ -2,11 +2,25 @@
 
 [![LoopBack](<https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
 
+A loopback-next extension for authorization in loopback applications. Its a very simplistic yet powerful and effective implementation using simple string based permissions.
+
+It provides three ways of integration
+
+1. **User level permissions only** - Permissions are associated directly to user. In this case, each user entry in DB contains specific array of permission keys.
+2. **Role based permissions** - Permissions are associated to roles and users have a specific role attached. This actually reduces redundancy in DB a lot, as most of the time, users will have many common permissions. If that is not the case for you, then, use method #1 above.
+3. **Role based permissions with user level override** - This is the most flexible architecture. In this case, method #2 is implemented as is. On top of it, we also add user-level permissions override, allow/deny permissions over role permissions. So, say there is user who can perform all admin role actions except he cannot remove users from the system. So, DeleteUser permission can be denied at user level and role can be set as Admin for the user.
+
+Refer to the usage section below for details on integration
+
 ## Install
 
 ```sh
 npm install loopback4-authorization
 ```
+
+## Quick Starter
+
+For a quick starter guide, you can refer to our [loopback 4 starter](https://github.com/sourcefuse/loopback4-starter) application which utilizes method #3 from the above in a simple multi-tenant application.
 
 ## Usage
 
@@ -18,19 +32,43 @@ In order to use this component into your LoopBack application, please follow bel
 this.component(AuthorizationComponent);
 ```
 
-- Add permissions array to the role model.
+- If using method #1 from above, implement Permissions interface in User model and add permissions array.
+
+```ts
+@model({
+  name: 'users',
+})
+export class User extends Entity implements Permissions<string> {
+  // .....
+  // other attributes here
+  // .....
+
+  @property({
+    type: 'array',
+    itemType: 'string',
+  })
+  permissions: string[];
+
+  constructor(data?: Partial<User>) {
+    super(data);
+  }
+}
+```
+
+- If using method #2 or #3 from above, implement Permissions interface in Role model and add permissions array.
 
 ```ts
 @model({
   name: 'roles',
 })
-export class Role extends Entity {
+export class Role extends Entity implements Permissions<string> {
   // .....
   // other attributes here
   // .....
 
-  @property.array(String, {
-    required: true,
+  @property({
+    type: 'array',
+    itemType: 'string',
   })
   permissions: string[];
 
@@ -40,26 +78,42 @@ export class Role extends Entity {
 }
 ```
 
-- Add user level permissions array to the user model. Do this if there is a use
-  case of explicit allow/deny of permissions at user-level in the application.
+- If using method #3 from above, implement UserPermissionsOverride interface in User model and add user level permissions array as below.
+  Do this if there is a use-case of explicit allow/deny of permissions at user-level in the application.
   You can skip otherwise.
 
 ```ts
 @model({
   name: 'users',
 })
-export class User extends Entity {
+export class User extends Entity implements UserPermissionsOverride<string> {
   // .....
   // other attributes here
   // .....
 
-  @property.array(String)
-  permissions: UserPermission[];
+  @property({
+    type: 'array',
+    itemType: 'object',
+  })
+  permissions: UserPermission<string>[];
 
   constructor(data?: Partial<User>) {
     super(data);
   }
 }
+```
+
+- For method #3, we also provide a simple provider function [_AuthorizatonBindings.USER_PERMISSIONS_](<[./src/providers/user-permissions.provider.ts](https://github.com/sourcefuse/loopback4-authorization/blob/master/src/providers/user-permissions.provider.ts)>) to evaluate the user permissions based on its role permissions and user-level overrides. Just inject it
+
+```ts
+@inject(AuthorizatonBindings.USER_PERMISSIONS)
+private readonly getUserPermissions: UserPermissionsFn<string>,
+```
+
+and invoke it
+
+```ts
+const permissions = this.getUserPermissions(user.permissions, role.permissions);
 ```
 
 - Add a step in custom sequence to check for authorization whenever any end
@@ -69,6 +123,7 @@ export class User extends Entity {
 import {inject} from '@loopback/context';
 import {
   FindRoute,
+  HttpErrors,
   InvokeMethod,
   ParseParams,
   Reject,
@@ -76,14 +131,17 @@ import {
   RestBindings,
   Send,
   SequenceHandler,
-  HttpErrors,
 } from '@loopback/rest';
-import {AuthenticationBindings, AuthenticateFn} from './authenticate';
+import {AuthenticateFn, AuthenticationBindings} from 'loopback4-authentication';
 import {
   AuthorizatonBindings,
-  AuthorizeFn,
   AuthorizeErrorKeys,
-} from './authorization';
+  AuthorizeFn,
+  UserPermissionsFn,
+} from 'loopback4-authorization';
+
+import {AuthClient} from './models/auth-client.model';
+import {User} from './models/user.model';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -94,34 +152,40 @@ export class MySequence implements SequenceHandler {
     @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
     @inject(SequenceActions.SEND) public send: Send,
     @inject(SequenceActions.REJECT) public reject: Reject,
-    @inject(AuthenticationBindings.AUTH_ACTION)
-    protected authenticateRequest: AuthenticateFn,
-    @inject(AuthorizatonBindings.USER_PERMISSIONS)
-    protected fetchUserPermissons: UserPermissionsFn,
+    @inject(AuthenticationBindings.USER_AUTH_ACTION)
+    protected authenticateRequest: AuthenticateFn<AuthUser>,
+    @inject(AuthenticationBindings.CLIENT_AUTH_ACTION)
+    protected authenticateRequestClient: AuthenticateFn<AuthClient>,
     @inject(AuthorizatonBindings.AUTHORIZE_ACTION)
-    protected checkAuthorization: AuthorizeFn,
+    protected checkAuthorisation: AuthorizeFn,
+    @inject(AuthorizatonBindings.USER_PERMISSIONS)
+    private readonly getUserPermissions: UserPermissionsFn<string>,
   ) {}
 
   async handle(context: RequestContext) {
+    const requestTime = Date.now();
     try {
       const {request, response} = context;
       const route = this.findRoute(request);
       const args = await this.parseParams(request, route);
-      // Do authentication of the user and fetch user permissions below
-      const authUser: AuthResponse = await this.authenticateRequest(request);
-      // Parse and calculate user permissions based on role and user level
-      const permissions: PermissionKey[] = this.fetchUserPermissons(
+      request.body = args[args.length - 1];
+      await this.authenticateRequestClient(request);
+      const authUser: User = await this.authenticateRequest(request);
+
+      // Do ths if you are using method #3
+      const permissions = this.getUserPermissions(
         authUser.permissions,
         authUser.role.permissions,
       );
-      // This is main line added to sequence
-      // where we are invoking the authorize action function to check for access
-      const isAccessAllowed: boolean = await this.checkAuthorization(
-        permissions,
+      // This is the important line added for authorization. Needed for all 3 methods
+      const isAccessAllowed: boolean = await this.checkAuthorisation(
+        permissions, // do authUser.permissions if using method #1
       );
+      // Checking access to route here
       if (!isAccessAllowed) {
         throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
       }
+
       const result = await this.invoke(route, args);
       this.send(response, result);
     } catch (err) {
@@ -131,11 +195,13 @@ export class MySequence implements SequenceHandler {
 }
 ```
 
-Now we can add access permission keys to the controller methods using authorize
-decorator as below.
+The above sequence also contains user authentication using [loopback4-authentication](https://github.com/sourcefuse/loopback4-authentication) package. You can refer to the documentation for the same for more details.
+
+- Now we can add access permission keys to the controller methods using authorize
+  decorator as below.
 
 ```ts
-@authorize([PermissionKey.CreateRoles])
+@authorize(['CreateRole'])
 @post(rolesPath, {
   responses: {
     [STATUS_CODE.OK]: {
@@ -152,7 +218,54 @@ async create(@requestBody() role: Role): Promise<Role> {
 ```
 
 This endpoint will only be accessible if logged in user has permission
-'CreateRoles'.
+'CreateRole'.
+
+A good practice is to keep all permission strings in a separate enum file like this.
+
+```ts
+export const enum PermissionKey {
+  ViewOwnUser = 'ViewOwnUser',
+  ViewAnyUser = 'ViewAnyUser',
+  ViewTenantUser = 'ViewTenantUser',
+  CreateAnyUser = 'CreateAnyUser',
+  CreateTenantUser = 'CreateTenantUser',
+  UpdateOwnUser = 'UpdateOwnUser',
+  UpdateTenantUser = 'UpdateTenantUser',
+  UpdateAnyUser = 'UpdateAnyUser',
+  DeleteTenantUser = 'DeleteTenantUser',
+  DeleteAnyUser = 'DeleteAnyUser',
+
+  ViewTenant = 'ViewTenant',
+  CreateTenant = 'CreateTenant',
+  UpdateTenant = 'UpdateTenant',
+  DeleteTenant = 'DeleteTenant',
+
+  ViewRole = 'ViewRole',
+  CreateRole = 'CreateRole',
+  UpdateRole = 'UpdateRole',
+  DeleteRole = 'DeleteRole',
+
+  ViewAudit = 'ViewAudit',
+  CreateAudit = 'CreateAudit',
+  UpdateAudit = 'UpdateAudit',
+  DeleteAudit = 'DeleteAudit',
+}
+```
+
+## Feedback
+
+If you've noticed a bug or have a question or have a feature request, [search the issue tracker](https://github.com/sourcefuse/loopback4-authentication/issues) to see if someone else in the community has already created a ticket.
+If not, go ahead and [make one](https://github.com/sourcefuse/loopback4-authentication/issues/new/choose)!
+All feature requests are welcome. Implementation time may vary. Feel free to contribute the same, if you can.
+If you think this extension is useful, please [star](https://help.github.com/en/articles/about-stars) it. Appreciation really helps in keeping this project alive.
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://github.com/sourcefuse/loopback4-authorization/blob/master/.github/CONTRIBUTING.md) for details on the process for submitting pull requests to us.
+
+## Code of conduct
+
+Code of conduct guidelines [here](https://github.com/sourcefuse/loopback4-authorization/blob/master/.github/CODE_OF_CONDUCT.md).
 
 ## License
 
