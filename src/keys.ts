@@ -1,11 +1,16 @@
 import {BindingKey} from '@loopback/context';
 import {MetadataAccessor} from '@loopback/metadata';
-import {AuthorizeFn, AuthorizationMetadata, UserPermissionsFn} from './types';
+import {
+  AuthorizeFn,
+  AuthorizationMetadata,
+  UserPermissionsFn,
+  AuthorizationConfig,
+} from './types';
 
 /**
  * Binding keys used by this component.
  */
-export namespace AuthorizatonBindings {
+export namespace AuthorizationBindings {
   export const AUTHORIZE_ACTION = BindingKey.create<AuthorizeFn>(
     'sf.userAuthorization.actions.authorize',
   );
@@ -17,9 +22,15 @@ export namespace AuthorizatonBindings {
   export const USER_PERMISSIONS = BindingKey.create<UserPermissionsFn<string>>(
     'sf.userAuthorization.actions.userPermissions',
   );
+
+  export const CONFIG = BindingKey.create<AuthorizationConfig>(
+    'sf.userAuthorization.config',
+  );
+
+  export const PATHS_TO_ALLOW_ALWAYS = 'sf.userAuthorization.allowAlways';
 }
 
 export const AUTHORIZATION_METADATA_ACCESSOR = MetadataAccessor.create<
   AuthorizationMetadata,
   MethodDecorator
->('userAuthorization.accessor.operationMetadata');
+>('sf.userAuthorization.accessor.operationMetadata');

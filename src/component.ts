@@ -1,18 +1,41 @@
-import {Component, ProviderMap} from '@loopback/core';
+import {Component, ProviderMap, Binding, inject} from '@loopback/core';
 
-import {AuthorizatonBindings} from './keys';
+import {AuthorizationBindings} from './keys';
 import {AuthorizeActionProvider} from './providers/authorization-action.provider';
 import {AuthorizationMetadataProvider} from './providers/authorization-metadata.provider';
 import {UserPermissionsProvider} from './providers/user-permissions.provider';
+import {AuthorizationConfig} from './types';
 
 export class AuthorizationComponent implements Component {
   providers?: ProviderMap;
+  bindings?: Binding[];
 
-  constructor() {
+  constructor(
+    @inject(AuthorizationBindings.CONFIG)
+    private readonly config?: AuthorizationConfig,
+  ) {
     this.providers = {
-      [AuthorizatonBindings.AUTHORIZE_ACTION.key]: AuthorizeActionProvider,
-      [AuthorizatonBindings.METADATA.key]: AuthorizationMetadataProvider,
-      [AuthorizatonBindings.USER_PERMISSIONS.key]: UserPermissionsProvider,
+      [AuthorizationBindings.AUTHORIZE_ACTION.key]: AuthorizeActionProvider,
+      [AuthorizationBindings.METADATA.key]: AuthorizationMetadataProvider,
+      [AuthorizationBindings.USER_PERMISSIONS.key]: UserPermissionsProvider,
     };
+
+    if (
+      config &&
+      config.allowAlwaysPaths &&
+      config.allowAlwaysPaths.length > 0
+    ) {
+      this.bindings = [
+        Binding.bind(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS).to(
+          config.allowAlwaysPaths,
+        ),
+      ];
+    } else {
+      this.bindings = [
+        Binding.bind(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS).to([
+          '/explorer',
+        ]),
+      ];
+    }
   }
 }

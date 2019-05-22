@@ -29,6 +29,9 @@ In order to use this component into your LoopBack application, please follow bel
 - Add component to application.
 
 ```ts
+this.bind(AuthorizationBindings.CONFIG).to({
+  allowAlwaysPaths: ['/explorer'],
+});
 this.component(AuthorizationComponent);
 ```
 
@@ -180,6 +183,7 @@ export class MySequence implements SequenceHandler {
       // This is the important line added for authorization. Needed for all 3 methods
       const isAccessAllowed: boolean = await this.checkAuthorisation(
         permissions, // do authUser.permissions if using method #1
+        request,
       );
       // Checking access to route here
       if (!isAccessAllowed) {

@@ -1,3 +1,5 @@
+import {Request} from 'express';
+
 /**
  * Authorize action method interface
  */
@@ -5,7 +7,7 @@ export interface AuthorizeFn {
   // userPermissions - Array of permission keys granted to the user
   // This is actually a union of permissions picked up based on role
   // attached to the user and allowed permissions at specific user level
-  (userPermissions: string[]): Promise<boolean>;
+  (userPermissions: string[], request?: Request): Promise<boolean>;
 }
 
 /**
@@ -15,6 +17,16 @@ export interface AuthorizationMetadata {
   // Array of permissions required at the method level.
   // User need to have at least one of these to access the API method.
   permissions: string[];
+}
+
+/**
+ * Authorization config type for providing config to the component
+ */
+export interface AuthorizationConfig {
+  /**
+   * Specify paths to always allow. No permissions check needed.
+   */
+  allowAlwaysPaths: string[];
 }
 
 /**

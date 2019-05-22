@@ -12,13 +12,14 @@ import {AuthorizationMetadata} from '../types';
 export class AuthorizationMetadataProvider
   implements Provider<AuthorizationMetadata | undefined> {
   constructor(
-    @inject(CoreBindings.CONTROLLER_CLASS)
+    @inject(CoreBindings.CONTROLLER_CLASS, {optional: true})
     private readonly controllerClass: Constructor<{}>,
-    @inject(CoreBindings.CONTROLLER_METHOD_NAME)
+    @inject(CoreBindings.CONTROLLER_METHOD_NAME, {optional: true})
     private readonly methodName: string,
   ) {}
 
   value(): AuthorizationMetadata | undefined {
+    if (!this.controllerClass || !this.methodName) return;
     return getAuthorizeMetadata(this.controllerClass, this.methodName);
   }
 }
