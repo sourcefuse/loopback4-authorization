@@ -106,10 +106,10 @@ export class User extends Entity implements UserPermissionsOverride<string> {
 }
 ```
 
-- For method #3, we also provide a simple provider function [_AuthorizatonBindings.USER_PERMISSIONS_](<[./src/providers/user-permissions.provider.ts](https://github.com/sourcefuse/loopback4-authorization/blob/master/src/providers/user-permissions.provider.ts)>) to evaluate the user permissions based on its role permissions and user-level overrides. Just inject it
+- For method #3, we also provide a simple provider function [_AuthorizationBindings.USER_PERMISSIONS_](<[./src/providers/user-permissions.provider.ts](https://github.com/sourcefuse/loopback4-authorization/blob/master/src/providers/user-permissions.provider.ts)>) to evaluate the user permissions based on its role permissions and user-level overrides. Just inject it
 
 ```ts
-@inject(AuthorizatonBindings.USER_PERMISSIONS)
+@inject(AuthorizationBindings.USER_PERMISSIONS)
 private readonly getUserPermissions: UserPermissionsFn<string>,
 ```
 
@@ -137,7 +137,7 @@ import {
 } from '@loopback/rest';
 import {AuthenticateFn, AuthenticationBindings} from 'loopback4-authentication';
 import {
-  AuthorizatonBindings,
+  AuthorizationBindings,
   AuthorizeErrorKeys,
   AuthorizeFn,
   UserPermissionsFn,
@@ -159,9 +159,9 @@ export class MySequence implements SequenceHandler {
     protected authenticateRequest: AuthenticateFn<AuthUser>,
     @inject(AuthenticationBindings.CLIENT_AUTH_ACTION)
     protected authenticateRequestClient: AuthenticateFn<AuthClient>,
-    @inject(AuthorizatonBindings.AUTHORIZE_ACTION)
+    @inject(AuthorizationBindings.AUTHORIZE_ACTION)
     protected checkAuthorisation: AuthorizeFn,
-    @inject(AuthorizatonBindings.USER_PERMISSIONS)
+    @inject(AuthorizationBindings.USER_PERMISSIONS)
     private readonly getUserPermissions: UserPermissionsFn<string>,
   ) {}
 
