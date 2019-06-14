@@ -4,6 +4,7 @@
 
 [![Node version](https://img.shields.io/node/v/loopback4-authorization.svg?style=flat-square)](https://nodejs.org/en/download/)
 [![Dependencies Status](https://img.shields.io/david/sourcefuse/loopback4-authorization.svg?style=flat-square)](https://github.com/sourcefuse/loopback4-authorization)
+[![Loopback Core Version](https://img.shields.io/npm/dependency-version/loopback4-authorization/dev/@loopback/core.svg?color=dark%20green&style=flat-square)](https://github.com/strongloop/loopback-next)
 [![npm vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/loopback4-authorization.svg?label=npm%20vulnerabilities&style=flat-square)](https://www.npmjs.com/package/loopback4-authorization)
 
 [![Latest version](https://img.shields.io/npm/v/loopback4-authorization.svg?style=flat-square)](https://www.npmjs.com/package/loopback4-authorization)
