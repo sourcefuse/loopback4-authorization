@@ -1,4 +1,4 @@
-import {Request} from 'express';
+import {Request} from '@loopback/rest';
 
 /**
  * Authorize action method interface
