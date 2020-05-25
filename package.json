@@ -64,6 +64,7 @@
     "@types/lodash": "^4.14.135",
     "@types/node": "^10.14.8",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "minimist": ">=0.2.1"
   }
 }
