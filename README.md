@@ -172,6 +172,8 @@ export class MySequence implements SequenceHandler {
     protected authenticateRequestClient: AuthenticateFn<AuthClient>,
     @inject(AuthorizationBindings.AUTHORIZE_ACTION)
     protected checkAuthorisation: AuthorizeFn,
+    @inject(AuthorizationBindings.CUSTOM_AUTHORIZE_ACTION)
+    protected checkCustomAuthorisation: CustomAuthorizeFn,
     @inject(AuthorizationBindings.USER_PERMISSIONS)
     private readonly getUserPermissions: UserPermissionsFn<string>,
   ) {}
@@ -196,8 +198,13 @@ export class MySequence implements SequenceHandler {
         permissions, // do authUser.permissions if using method #1
         request,
       );
+
+      const isCustomAccessAllowed: boolean = await this.checkCustomAuthorisation(
+        permissions, // do authUser.permissions if using method #1
+        request,
+      );
       // Checking access to route here
-      if (!isAccessAllowed) {
+      if (!isAccessAllowed || !isCustomAccessAllowed) {
         throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
       }
 

@@ -5,6 +5,7 @@ import {AuthorizeActionProvider} from './providers/authorization-action.provider
 import {AuthorizationMetadataProvider} from './providers/authorization-metadata.provider';
 import {UserPermissionsProvider} from './providers/user-permissions.provider';
 import {AuthorizationConfig} from './types';
+import {CustomAuthorizeActionProvider} from './providers/custom-authorization-action.provider';
 
 export class AuthorizationComponent implements Component {
   providers?: ProviderMap;
@@ -16,6 +17,8 @@ export class AuthorizationComponent implements Component {
   ) {
     this.providers = {
       [AuthorizationBindings.AUTHORIZE_ACTION.key]: AuthorizeActionProvider,
+      [AuthorizationBindings.CUSTOM_AUTHORIZE_ACTION
+        .key]: CustomAuthorizeActionProvider,
       [AuthorizationBindings.METADATA.key]: AuthorizationMetadataProvider,
       [AuthorizationBindings.USER_PERMISSIONS.key]: UserPermissionsProvider,
     };

@@ -5,6 +5,7 @@ import {
   AuthorizationMetadata,
   UserPermissionsFn,
   AuthorizationConfig,
+  CustomAuthorizeFn,
 } from './types';
 
 /**
@@ -13,6 +14,10 @@ import {
 export namespace AuthorizationBindings {
   export const AUTHORIZE_ACTION = BindingKey.create<AuthorizeFn>(
     'sf.userAuthorization.actions.authorize',
+  );
+
+  export const CUSTOM_AUTHORIZE_ACTION = BindingKey.create<CustomAuthorizeFn>(
+    'sf.userAuthorization.actions.customAuthorize',
   );
 
   export const METADATA = BindingKey.create<AuthorizationMetadata | undefined>(

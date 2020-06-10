@@ -11,6 +11,13 @@ export interface AuthorizeFn {
 }
 
 /**
+ * Custom Authorize action method interface
+ */
+export interface CustomAuthorizeFn {
+  // userPermissions - Array of permission keys granted to the user
+  (userPermissions: string[], request?: Request): Promise<boolean>;
+}
+/**
  * Authorization metadata interface for the method decorator
  */
 export interface AuthorizationMetadata {
