@@ -8,6 +8,7 @@ import {
   CasbinEnforcerFn,
   CasbinAuthorizeFn,
   CasbinEnforcerConfigGetterFn,
+  CasbinResourceModifierFn,
 } from './types';
 import { CoreBindings } from '@loopback/core';
 import { AuthorizationComponent } from './component';
@@ -43,6 +44,10 @@ export namespace AuthorizationBindings {
 
   export const CASBIN_ENFORCER_CONFIG_GETTER = BindingKey.create<CasbinEnforcerConfigGetterFn>(
     'sf.userCasbinAuthorization.casbinEnforcerConfigGetter',
+  );
+
+  export const CASBIN_RESOURCE_MODIFIER_FN = BindingKey.create<CasbinResourceModifierFn>(
+    'sf.userCasbinAuthorization.casbinResourceModifierFn',
   );
 
   export const CONFIG = BindingKey.create<AuthorizationConfig>(

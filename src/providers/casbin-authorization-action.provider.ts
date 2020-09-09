@@ -18,17 +18,17 @@ export class CasbinAuthorizationProvider implements Provider<CasbinAuthorizeFn> 
   ) { }
 
   value(): CasbinAuthorizeFn {
-    return (response) => this.action(response);
+    return (response, resource) => this.action(response, resource);
   }
 
-  async action(user: IAuthUserWithPermissions): Promise<boolean> {
+  async action(user: IAuthUserWithPermissions, resource: string): Promise<boolean> {
     let authDecision = false;
     try {
       const metadata: AuthorizationMetadata = await this.getCasbinMetadata();
 
       const subject = this.getUserName(`${user.id}`);
 
-      const object = metadata.resource;
+      const object = resource;
 
       const action = metadata.permissions && metadata.permissions.length > 0 ? metadata.permissions[0] : DEFAULT_SCOPE;
 

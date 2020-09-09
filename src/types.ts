@@ -20,7 +20,7 @@ export interface CasbinAuthorizeFn {
   // userPermissions - Array of permission keys granted to the user
   // This is actually a union of permissions picked up based on role
   // attached to the user and allowed permissions at specific user level
-  (user: IAuthUserWithPermissions): Promise<boolean>;
+  (user: IAuthUserWithPermissions, resVal: string): Promise<boolean>;
 }
 /**
  * Authorization metadata interface for the method decorator
@@ -91,7 +91,7 @@ export interface CasbinEnforcerConfigGetterFn {
 }
 
 export interface CasbinResourceModifierFn {
-  (authUser: IAuthUserWithPermissions, resource: string, isCasbinPolicy?: boolean): Promise<CasbinConfig>;
+  (pathParams: string[]): Promise<string>;
 }
 
 export interface CasbinConfig {
