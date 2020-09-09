@@ -5,15 +5,22 @@ import {
   AuthorizationMetadata,
   UserPermissionsFn,
   AuthorizationConfig,
-  CasbinAuthorizationMetadata,
   CasbinEnforcerFn,
   CasbinAuthorizeFn,
+  CasbinEnforcerConfigGetterFn,
 } from './types';
+import { CoreBindings } from '@loopback/core';
+import { AuthorizationComponent } from './component';
 
 /**
  * Binding keys used by this component.
  */
 export namespace AuthorizationBindings {
+
+  export const COMPONENT = BindingKey.create<AuthorizationComponent>(
+    `${CoreBindings.COMPONENTS}.AuthorizationComponent`,
+  );
+
   export const AUTHORIZE_ACTION = BindingKey.create<AuthorizeFn>(
     'sf.userAuthorization.actions.authorize',
   );
@@ -26,16 +33,16 @@ export namespace AuthorizationBindings {
     'sf.userAuthorization.operationMetadata',
   );
 
-  export const CASBIN_METADATA = BindingKey.create<CasbinAuthorizationMetadata | undefined>(
-    'sf.userCasbinAuthorization.operationMetadata',
-  );
-
   export const USER_PERMISSIONS = BindingKey.create<UserPermissionsFn<string>>(
     'sf.userAuthorization.actions.userPermissions',
   );
 
   export const CASBIN_ENFORCER = BindingKey.create<CasbinEnforcerFn<string>>(
     'sf.userCasbinAuthorization.casbinenforcer',
+  );
+
+  export const CASBIN_ENFORCER_CONFIG_GETTER = BindingKey.create<CasbinEnforcerConfigGetterFn>(
+    'sf.userCasbinAuthorization.casbinEnforcerConfigGetter',
   );
 
   export const CONFIG = BindingKey.create<AuthorizationConfig>(
@@ -53,7 +60,4 @@ export const AUTHORIZATION_METADATA_ACCESSOR = MetadataAccessor.create<
   MethodDecorator
 >('sf.userAuthorization.accessor.operationMetadata');
 
-export const CASBIN_AUTHORIZATION_METADATA_ACCESSOR = MetadataAccessor.create<
-  CasbinAuthorizationMetadata,
-  MethodDecorator
->('sf.userCasbinAuthorization.accessor.operationMetadata');
+
