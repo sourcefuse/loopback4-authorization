@@ -1,7 +1,6 @@
-import { Request } from '@loopback/rest';
-import { IAuthUserWithPermissions } from '@sourceloop/core';
-import * as casbin from 'casbin';
-import PostgresAdapter from "casbin-pg-adapter";
+import {Request} from '@loopback/rest';
+import {IAuthUserWithPermissions} from '@sourceloop/core';
+import PostgresAdapter from 'casbin-pg-adapter';
 
 /**
  * Authorize action method interface
@@ -14,12 +13,11 @@ export interface AuthorizeFn {
 }
 
 /**
- * Authorize action method interface
+ * Casbin authorize action method interface
  */
 export interface CasbinAuthorizeFn {
-  // userPermissions - Array of permission keys granted to the user
-  // This is actually a union of permissions picked up based on role
-  // attached to the user and allowed permissions at specific user level
+  // user - User object corresponding to the logged in user
+  // resVal - value of the resource for which authorisation is being sought
   (user: IAuthUserWithPermissions, resVal: string): Promise<boolean>;
 }
 /**
@@ -30,10 +28,14 @@ export interface AuthorizationMetadata {
   // User need to have at least one of these to access the API method.
   permissions: string[];
 
-  resource: string;
+  // Name of resource for which authorisation is being sought
+  resource?: string;
 
-  // voters: (CasbinVoterFn[]);
-
+  /**
+   * Boolean flag to determine whether we are using casbin policy format or not
+   * isCasbinPolicy = true, when we are providing casbin format policy doc in application
+   * isCasbinPolicy = false, when we are impplementing provider in app to give casbin policy
+   */
   isCasbinPolicy?: boolean;
 }
 
@@ -82,20 +84,35 @@ export interface UserPermissionsFn<T> {
   (userPermissions: UserPermission<T>[], rolePermissions: T[]): T[];
 }
 
-export interface CasbinEnforcerFn<T> {
-  (model: T, policy: T | PostgresAdapter): Promise<casbin.Enforcer>;
-}
-
+/**
+ * Casbin enforcer getter method interface
+ *
+ * This method provides the Casbin config
+ * required to initialise a Casbin enforcer
+ */
 export interface CasbinEnforcerConfigGetterFn {
-  (authUser: IAuthUserWithPermissions, resource: string, isCasbinPolicy?: boolean): Promise<CasbinConfig>;
+  (
+    authUser: IAuthUserWithPermissions,
+    resource: string,
+    isCasbinPolicy?: boolean,
+  ): Promise<CasbinConfig>;
 }
 
+/**
+ * Casbin resource value modifier method interface
+ *
+ * This method can help modify the resource value
+ * for integration with casbin, as per business logic
+ */
 export interface CasbinResourceModifierFn {
   (pathParams: string[]): Promise<string>;
 }
 
+/**
+ * Casbin config object
+ */
 export interface CasbinConfig {
   model: string;
-  policy?: string;
+  policy?: string | PostgresAdapter;
   allowedRes?: string[];
 }
