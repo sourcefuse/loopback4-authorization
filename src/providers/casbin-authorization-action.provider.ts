@@ -1,5 +1,4 @@
 import {Getter, inject, Provider} from '@loopback/core';
-import {IAuthUserWithPermissions} from '@sourceloop/core';
 import * as casbin from 'casbin';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -8,8 +7,10 @@ import {
   AuthorizationMetadata,
   CasbinAuthorizeFn,
   CasbinEnforcerConfigGetterFn,
+  IAuthUserWithPermissions,
 } from '../types';
 const fsPromises = fs.promises;
+import {Request} from '@loopback/express';
 
 const DEFAULT_SCOPE = 'execute';
 
@@ -22,22 +23,34 @@ export class CasbinAuthorizationProvider
     private readonly getCasbinEnforcerConfig: Getter<
       CasbinEnforcerConfigGetterFn
     >,
+    @inject(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS)
+    private readonly allowAlwaysPath: string[],
   ) {}
 
   value(): CasbinAuthorizeFn {
-    return (response, resource) => this.action(response, resource);
+    return (response, resource, request) =>
+      this.action(response, resource, request);
   }
 
   async action(
     user: IAuthUserWithPermissions,
     resource: string,
+    request?: Request,
   ): Promise<boolean> {
     let authDecision = false;
     try {
       // fetch decorator metadata
       const metadata: AuthorizationMetadata = await this.getCasbinMetadata();
 
-      if (!metadata.resource) {
+      if (request && this.checkIfAllowedAlways(request)) {
+        return true;
+      } else if (!metadata) {
+        return false;
+      } else if (metadata.permissions.indexOf('*') === 0) {
+        // Return immediately with true, if allowed to all
+        // This is for publicly open routes only
+        return true;
+      } else if (!metadata.resource) {
         return false;
       }
 
@@ -102,12 +115,21 @@ export class CasbinAuthorizationProvider
     //Expected format for allowedRes: ['ping', 'ping2', 'ping3'];
 
     let result = '';
-    allowedRes.forEach(res => {
+    allowedRes.forEach((res) => {
       const policy = `p, ${subject}, ${res}, ${action}
       `;
       result += policy;
     });
 
     return result;
+  }
+
+  checkIfAllowedAlways(req: Request): boolean {
+    let allowed = false;
+    // eslint-disable-next-line no-shadow
+    allowed = !!this.allowAlwaysPath.find(
+      (path) => req.path.indexOf(path) === 0,
+    );
+    return allowed;
   }
 }

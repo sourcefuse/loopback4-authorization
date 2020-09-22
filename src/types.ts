@@ -1,5 +1,4 @@
-import {Request} from '@loopback/rest';
-import {IAuthUserWithPermissions} from '@sourceloop/core';
+import {Request} from '@loopback/express';
 import PostgresAdapter from 'casbin-pg-adapter';
 
 /**
@@ -18,7 +17,9 @@ export interface AuthorizeFn {
 export interface CasbinAuthorizeFn {
   // user - User object corresponding to the logged in user
   // resVal - value of the resource for which authorisation is being sought
-  (user: IAuthUserWithPermissions, resVal: string): Promise<boolean>;
+  (user: IAuthUserWithPermissions, resVal: string, request: Request): Promise<
+    boolean
+  >;
 }
 /**
  * Authorization metadata interface for the method decorator
@@ -115,4 +116,34 @@ export interface CasbinConfig {
   model: string;
   policy?: string | PostgresAdapter;
   allowedRes?: string[];
+}
+
+export interface IAuthUser {
+  id?: number | string;
+  username: string;
+  password?: string;
+}
+
+export interface IUserPrefs {
+  locale?: string;
+}
+
+export interface IAuthUserWithPermissions<
+  ID = string,
+  TID = string,
+  UTID = string
+> extends IAuthUser {
+  id?: string;
+  identifier?: ID;
+  permissions: string[];
+  authClientId: number;
+  userPreferences?: IUserPrefs;
+  email?: string;
+  role: string;
+  firstName: string;
+  lastName: string;
+  middleName?: string;
+  tenantId?: TID;
+  userTenantId?: UTID;
+  passwordExpiryTime?: Date;
 }

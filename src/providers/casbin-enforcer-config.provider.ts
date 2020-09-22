@@ -1,7 +1,6 @@
 import {Provider} from '@loopback/context';
 
-import {CasbinEnforcerConfigGetterFn} from '../types';
-import {IAuthUserWithPermissions} from '@sourceloop/core';
+import {CasbinEnforcerConfigGetterFn, IAuthUserWithPermissions} from '../types';
 import {HttpErrors} from '@loopback/rest';
 
 export class CasbinEnforcerProvider
