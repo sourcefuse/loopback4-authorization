@@ -115,7 +115,12 @@ export interface CasbinResourceModifierFn {
 export interface CasbinConfig {
   model: string;
   policy?: string | PostgresAdapter;
-  allowedRes?: string[];
+  allowedRes?: ResourcePermissionObject[];
+}
+
+export interface ResourcePermissionObject {
+  resource: string;
+  permission: string;
 }
 
 export interface IAuthUser {
@@ -132,7 +137,7 @@ export interface IAuthUserWithPermissions<
   ID = string,
   TID = string,
   UTID = string
-> extends IAuthUser {
+  > extends IAuthUser {
   id?: string;
   identifier?: ID;
   permissions: string[];

@@ -21,6 +21,10 @@ It provides three ways of integration
 2. **Role based permissions** - Permissions are associated to roles and users have a specific role attached. This actually reduces redundancy in DB a lot, as most of the time, users will have many common permissions. If that is not the case for you, then, use method #1 above.
 3. **Role based permissions with user level override** - This is the most flexible architecture. In this case, method #2 is implemented as is. On top of it, we also add user-level permissions override, allow/deny permissions over role permissions. So, say there is user who can perform all admin role actions except he cannot remove users from the system. So, DeleteUser permission can be denied at user level and role can be set as Admin for the user.
 
+As a further enhancement to these methods, we are using [casbin library!](https://casbin.org/docs/en/overview) to define permissions at level of entity or resource associated with an API call. Casbin authorisation implementation can be performed in two ways:
+1. **Using default casbin policy document** - Define policy document in default casbin format in the app, and configure authorise decorator to use those policies.
+2. **Defining custom logic to form dynamic policies** - Implement dynamic permissions based on app logic in casbin-enforcer-config provider. Authorisation extension will dynamically create casbin policy using this business logic to give the authorisation decisions.
+
 Refer to the usage section below for details on integration
 
 ## Install
@@ -37,13 +41,21 @@ For a quick starter guide, you can refer to our [loopback 4 starter](https://git
 
 In order to use this component into your LoopBack application, please follow below steps.
 
-- Add component to application.
+- Add component to application. Also add providers to implement casbin authorisation.
 
 ```ts
 this.bind(AuthorizationBindings.CONFIG).to({
   allowAlwaysPaths: ['/explorer'],
 });
 this.component(AuthorizationComponent);
+
+this.bind(AuthorizationBindings.CASBIN_ENFORCER_CONFIG_GETTER).toProvider(
+  CasbinEnforcerConfigProvider,
+);
+
+this.bind(AuthorizationBindings.CASBIN_RESOURCE_MODIFIER_FN).toProvider(
+  CasbinResValModifierProvider,
+);
 ```
 
 - If using method #1 from above, implement Permissions interface in User model and add permissions array.
@@ -117,6 +129,81 @@ export class User extends Entity implements UserPermissionsOverride<string> {
 }
 ```
 
+- Implement the **Casbin Resource value modifier provider**. Customise the resource value based on business logic using route arguments parameter in the provider.
+
+```ts
+import {Getter, inject, Provider} from '@loopback/context';
+import {HttpErrors} from '@loopback/rest';
+import {
+  AuthorizationBindings,
+  AuthorizationMetadata,
+  CasbinResourceModifierFn
+} from 'loopback4-authorization';
+
+export class CasbinResValModifierProvider
+  implements Provider<CasbinResourceModifierFn> {
+  constructor(
+    @inject.getter(AuthorizationBindings.METADATA)
+    private readonly getCasbinMetadata: Getter<AuthorizationMetadata>,
+  ) {}
+
+  value(): CasbinResourceModifierFn {
+    return (pathParams: string[]) => this.action(pathParams);
+  }
+
+  async action(pathParams: string[]): Promise<string> {
+    const metadata: AuthorizationMetadata = await this.getCasbinMetadata();
+    if (!metadata) {
+      throw new HttpErrors.InternalServerError(`Metadata object not found`);
+    }
+    const res = metadata.resource;
+
+    // Now modify the resource parameter using on path params, as per business logic.
+    // Returning resource value as such for default case.
+
+    return `${res}`;
+  }
+}
+
+```
+- Implement the **casbin enforcer config provider** . Provide the casbin model path. In case 1 of using [default casbin format policy!](https://casbin.org/docs/en/how-it-works), provide the casbin policy path. In other case of creating dynamic policy, provide the array of Resource-Permission objects for a given user, based on business logic.
+
+```ts
+import {Provider} from '@loopback/context';
+import {CasbinConfig, CasbinEnforcerConfigGetterFn, IAuthUserWithPermissions} from 'loopback4-authorization';
+import * as path from 'path';
+
+export class CasbinEnforcerConfigProvider
+  implements Provider<CasbinEnforcerConfigGetterFn> {
+  constructor() {}
+
+  value(): CasbinEnforcerConfigGetterFn {
+    return (authUser: IAuthUserWithPermissions, resource: string, isCasbinPolicy?: boolean) =>
+      this.action(authUser, resource, isCasbinPolicy);
+  }
+
+  async action(authUser: IAuthUserWithPermissions, resource: string, isCasbinPolicy?: boolean): Promise<CasbinConfig> {
+    const model = path.resolve(
+      __dirname,
+      './../../fixtures/casbin/model.conf',
+    );
+
+    // Write business logic to find out the allowed resource-permission sets for this user. Below is a dummy value.
+    //const allowedRes = [{resource: 'session', permission: "CreateMeetingSession"}];
+
+    const policy = path.resolve(__dirname, './../../fixtures/casbin/policy.csv');
+
+    const result: CasbinConfig = {
+      model,
+      //allowedRes,
+      policy
+    }
+    return result;
+  }
+}
+```
+
+
 - For method #3, we also provide a simple provider function [_AuthorizationBindings.USER_PERMISSIONS_](<[./src/providers/user-permissions.provider.ts](https://github.com/sourcefuse/loopback4-authorization/blob/master/src/providers/user-permissions.provider.ts)>) to evaluate the user permissions based on its role permissions and user-level overrides. Just inject it
 
 ```ts
@@ -129,6 +216,16 @@ and invoke it
 ```ts
 const permissions = this.getUserPermissions(user.permissions, role.permissions);
 ```
+
+
+- Add the dependency injections for resource value modifer provider, and casbin authorisation function in the sequence.ts
+
+```ts
+    @inject(AuthorizationBindings.CASBIN_AUTHORIZE_ACTION)
+    protected checkAuthorisation: CasbinAuthorizeFn,
+    @inject(AuthorizationBindings.CASBIN_RESOURCE_MODIFIER_FN)
+    protected casbinResModifierFn: CasbinResourceModifierFn,
+  ```
 
 - Add a step in custom sequence to check for authorization whenever any end
   point is hit.
@@ -186,14 +283,13 @@ export class MySequence implements SequenceHandler {
       await this.authenticateRequestClient(request);
       const authUser: User = await this.authenticateRequest(request);
 
-      // Do ths if you are using method #3
-      const permissions = this.getUserPermissions(
-        authUser.permissions,
-        authUser.role.permissions,
-      );
-      // This is the important line added for authorization. Needed for all 3 methods
+      // Invoke Resource value modifier
+      const resVal = await this.casbinResModifierFn(args);
+
+      // Check authorisation
       const isAccessAllowed: boolean = await this.checkAuthorisation(
-        permissions, // do authUser.permissions if using method #1
+        authUser,
+        resVal,
         request,
       );
       // Checking access to route here
@@ -213,10 +309,10 @@ export class MySequence implements SequenceHandler {
 The above sequence also contains user authentication using [loopback4-authentication](https://github.com/sourcefuse/loopback4-authentication) package. You can refer to the documentation for the same for more details.
 
 - Now we can add access permission keys to the controller methods using authorize
-  decorator as below.
+  decorator as below. Set isCasbinPolicy parameter to use casbin default policy format. Default is false.
 
 ```ts
-@authorize(['CreateRole'])
+@authorize({permissions: ['CreateRole'], resource:'role', isCasbinPolicy: true})
 @post(rolesPath, {
   responses: {
     [STATUS_CODE.OK]: {
