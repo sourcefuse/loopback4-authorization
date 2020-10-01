@@ -1,4 +1,5 @@
-import {Request} from '@loopback/rest';
+import { Request } from '@loopback/express';
+import PostgresAdapter from 'casbin-pg-adapter';
 
 /**
  * Authorize action method interface
@@ -11,12 +12,32 @@ export interface AuthorizeFn {
 }
 
 /**
+ * Casbin authorize action method interface
+ */
+export interface CasbinAuthorizeFn {
+  // user - User object corresponding to the logged in user
+  // resVal - value of the resource for which authorisation is being sought
+  (user: IAuthUserWithPermissions, resVal: string, request: Request): Promise<
+    boolean
+  >;
+}
+/**
  * Authorization metadata interface for the method decorator
  */
 export interface AuthorizationMetadata {
   // Array of permissions required at the method level.
   // User need to have at least one of these to access the API method.
   permissions: string[];
+
+  // Name of resource for which authorisation is being sought
+  resource?: string;
+
+  /**
+   * Boolean flag to determine whether we are using casbin policy format or not
+   * isCasbinPolicy = true, when we are providing casbin format policy doc in application
+   * isCasbinPolicy = false, when we are implementing provider in app to give casbin policy
+   */
+  isCasbinPolicy?: boolean;
 }
 
 /**
@@ -62,4 +83,67 @@ export interface UserPermission<T> {
  */
 export interface UserPermissionsFn<T> {
   (userPermissions: UserPermission<T>[], rolePermissions: T[]): T[];
+}
+
+/**
+ * Casbin enforcer getter method interface
+ *
+ * This method provides the Casbin config
+ * required to initialise a Casbin enforcer
+ */
+export interface CasbinEnforcerConfigGetterFn {
+  (
+    authUser: IAuthUserWithPermissions,
+    resource: string,
+    isCasbinPolicy?: boolean,
+  ): Promise<CasbinConfig>;
+}
+
+/**
+ * Casbin resource value modifier method interface
+ *
+ * This method can help modify the resource value
+ * for integration with casbin, as per business logic
+ */
+export interface CasbinResourceModifierFn {
+  (pathParams: string[]): Promise<string>;
+}
+
+/**
+ * Casbin config object
+ */
+export interface CasbinConfig {
+  model: string;
+  policy?: string | PostgresAdapter;
+  allowedRes?: ResourcePermissionObject[];
+}
+
+export interface ResourcePermissionObject {
+  resource: string;
+  permission: string;
+}
+
+export interface IAuthUser {
+  id?: number | string;
+  username: string;
+  password?: string;
+}
+
+export interface IUserPrefs {
+  locale?: string;
+}
+
+export interface IAuthUserWithPermissions<
+  ID = string,
+  > extends IAuthUser {
+  id?: string;
+  identifier?: ID;
+  permissions: string[];
+  authClientId: number;
+  userPreferences?: IUserPrefs;
+  email?: string;
+  role: string;
+  firstName: string;
+  lastName: string;
+  middleName?: string;
 }
