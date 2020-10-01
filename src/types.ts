@@ -1,4 +1,4 @@
-import {Request} from '@loopback/express';
+import { Request } from '@loopback/express';
 import PostgresAdapter from 'casbin-pg-adapter';
 
 /**
@@ -35,7 +35,7 @@ export interface AuthorizationMetadata {
   /**
    * Boolean flag to determine whether we are using casbin policy format or not
    * isCasbinPolicy = true, when we are providing casbin format policy doc in application
-   * isCasbinPolicy = false, when we are impplementing provider in app to give casbin policy
+   * isCasbinPolicy = false, when we are implementing provider in app to give casbin policy
    */
   isCasbinPolicy?: boolean;
 }
@@ -135,8 +135,6 @@ export interface IUserPrefs {
 
 export interface IAuthUserWithPermissions<
   ID = string,
-  TID = string,
-  UTID = string
   > extends IAuthUser {
   id?: string;
   identifier?: ID;
@@ -148,7 +146,4 @@ export interface IAuthUserWithPermissions<
   firstName: string;
   lastName: string;
   middleName?: string;
-  tenantId?: TID;
-  userTenantId?: UTID;
-  passwordExpiryTime?: Date;
 }
