@@ -5,6 +5,9 @@ import {
   AuthorizationMetadata,
   UserPermissionsFn,
   AuthorizationConfig,
+  CasbinAuthorizeFn,
+  CasbinEnforcerConfigGetterFn,
+  CasbinResourceModifierFn,
 } from './types';
 
 /**
@@ -15,6 +18,10 @@ export namespace AuthorizationBindings {
     'sf.userAuthorization.actions.authorize',
   );
 
+  export const CASBIN_AUTHORIZE_ACTION = BindingKey.create<CasbinAuthorizeFn>(
+    'sf.userAuthorization.actions.casbin.authorize',
+  );
+
   export const METADATA = BindingKey.create<AuthorizationMetadata | undefined>(
     'sf.userAuthorization.operationMetadata',
   );
@@ -22,6 +29,14 @@ export namespace AuthorizationBindings {
   export const USER_PERMISSIONS = BindingKey.create<UserPermissionsFn<string>>(
     'sf.userAuthorization.actions.userPermissions',
   );
+
+  export const CASBIN_ENFORCER_CONFIG_GETTER = BindingKey.create<
+    CasbinEnforcerConfigGetterFn
+  >('sf.userAuthorization.actions.casbin.config');
+
+  export const CASBIN_RESOURCE_MODIFIER_FN = BindingKey.create<
+    CasbinResourceModifierFn
+  >('sf.userAuthorization.actions.casbin.resourceModifier');
 
   export const CONFIG = BindingKey.create<AuthorizationConfig>(
     'sf.userAuthorization.config',

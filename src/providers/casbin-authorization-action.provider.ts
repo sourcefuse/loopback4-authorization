@@ -1,0 +1,137 @@
+import { Getter, inject, Provider } from '@loopback/core';
+import { Request } from '@loopback/express';
+import { HttpErrors } from '@loopback/rest';
+import * as casbin from 'casbin';
+import * as fs from 'fs';
+import * as path from 'path';
+import { AuthorizationBindings } from '../keys';
+import {
+  AuthorizationMetadata,
+  CasbinAuthorizeFn,
+  CasbinEnforcerConfigGetterFn,
+  IAuthUserWithPermissions,
+  ResourcePermissionObject
+} from '../types';
+const fsPromises = fs.promises;
+
+export class CasbinAuthorizationProvider
+  implements Provider<CasbinAuthorizeFn> {
+  constructor(
+    @inject.getter(AuthorizationBindings.METADATA)
+    private readonly getCasbinMetadata: Getter<AuthorizationMetadata>,
+    @inject(AuthorizationBindings.CASBIN_ENFORCER_CONFIG_GETTER)
+    private readonly getCasbinEnforcerConfig:
+      CasbinEnforcerConfigGetterFn,
+    @inject(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS)
+    private readonly allowAlwaysPath: string[],
+  ) { }
+
+  value(): CasbinAuthorizeFn {
+    return (response, resource, request) =>
+      this.action(response, resource, request);
+  }
+
+  async action(
+    user: IAuthUserWithPermissions,
+    resource: string,
+    request?: Request,
+  ): Promise<boolean> {
+    let authDecision = false;
+    try {
+      // fetch decorator metadata
+      const metadata: AuthorizationMetadata = await this.getCasbinMetadata();
+
+      if (request && this.checkIfAllowedAlways(request)) {
+        return true;
+      } else if (!metadata) {
+        return false;
+      } else if (metadata.permissions.indexOf('*') === 0) {
+        // Return immediately with true, if allowed to all
+        // This is for publicly open routes only
+        return true;
+      } else if (!metadata.resource) {
+        throw new HttpErrors.Unauthorized(`Resource parameter is missing in the decorator.`);
+      }
+
+      const subject = this.getUserName(`${user.id}`);
+
+      // const object = resource;
+
+      let desiredPermissions;
+
+      if (metadata.permissions && metadata.permissions.length > 0) {
+        desiredPermissions = metadata.permissions;
+      } else {
+        throw new HttpErrors.Unauthorized(`Permissions are missing in the decorator.`);
+      }
+      // Fetch casbin config by invoking casbin-config-getter-provider
+
+      const casbinConfig = await this.getCasbinEnforcerConfig(user, metadata.resource);
+
+      let enforcer: casbin.Enforcer;
+
+      // If casbin config policy format is being used, create enforcer
+      if (metadata.isCasbinPolicy) {
+        enforcer = await casbin.newEnforcer(
+          casbinConfig.model,
+          casbinConfig.policy,
+        );
+      }
+      // In case casbin policy is coming via provider, use that to initialise enforcer
+      else if (!metadata.isCasbinPolicy && casbinConfig.allowedRes) {
+        const policy = this.createCasbinPolicy(
+          casbinConfig.allowedRes,
+          subject,
+        );
+        const baseDir = path.join(__dirname, '../../src/policy.csv');
+        await fsPromises.writeFile(baseDir, policy);
+
+        enforcer = await casbin.newEnforcer(casbinConfig.model, baseDir);
+      } else {
+        return false;
+      }
+
+      for (const permission of desiredPermissions) {
+        const decision = await enforcer.enforce(subject, resource, permission);
+        authDecision = authDecision || decision;
+      }
+
+    } catch (err) {
+      throw new HttpErrors.Unauthorized(err);
+    }
+
+    return authDecision;
+  }
+
+  // Generate the user name according to the naming convention
+  // in casbin policy
+  // A user's name would be `u${ id }`
+  getUserName(id: string): string {
+    return `u${id}`;
+  }
+
+  createCasbinPolicy(
+    resPermObj: ResourcePermissionObject[],
+    subject: string,
+  ): string {
+
+    let result = '';
+    resPermObj.forEach((resPerm) => {
+      const policy = `p, ${subject}, ${resPerm.resource}, ${resPerm.permission}
+        `;
+      result += policy;
+
+    });
+
+    return result;
+  }
+
+  checkIfAllowedAlways(req: Request): boolean {
+    let allowed = false;
+    // eslint-disable-next-line no-shadow
+    allowed = !!this.allowAlwaysPath.find(
+      (path) => req.path.indexOf(path) === 0,
+    );
+    return allowed;
+  }
+}

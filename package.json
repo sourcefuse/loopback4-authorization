@@ -45,25 +45,27 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/boot": "^1.4.4",
-    "@loopback/context": "^1.20.2",
-    "@loopback/core": "^1.8.5",
-    "@loopback/rest": "^1.16.3"
+    "@loopback/boot": "^1.7.4",
+    "@loopback/context": "^3.11.2",
+    "@loopback/core": "^2.10.0",
+    "@loopback/rest": "^1.26.1"
   },
   "dependencies": {
-    "lodash": "^4.17.15"
+    "casbin": "^5.1.5",
+    "casbin-pg-adapter": "^1.4.0",
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
-    "@loopback/boot": "^1.4.4",
-    "@loopback/build": "^2.0.3",
-    "@loopback/context": "^1.20.2",
-    "@loopback/core": "^1.8.5",
-    "@loopback/rest": "^1.16.3",
-    "@loopback/testlab": "^1.6.3",
+    "@loopback/boot": "^3.0.1",
+    "@loopback/build": "^6.2.4",
+    "@loopback/context": "^3.11.1",
+    "@loopback/core": "^2.10.1",
+    "@loopback/rest": "^7.0.1",
+    "@loopback/testlab": "^3.2.6",
     "@loopback/tslint-config": "^2.1.0",
-    "@types/lodash": "^4.14.135",
-    "@types/node": "^10.14.8",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.2"
+    "@types/lodash": "^4.14.161",
+    "@types/node": "^10.17.35",
+    "tslint": "^5.20.1",
+    "typescript": "^3.9.7"
   }
 }
