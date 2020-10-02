@@ -9,14 +9,15 @@
     "authorization",
     "authorisation"
   ],
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=8.9"
   },
   "scripts": {
-    "build": "lb-tsc --outDir dist",
+    "build": "npm run clean && lb-tsc",
     "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean dist",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
@@ -24,11 +25,11 @@
     "prettier:fix": "npm run prettier:cli -- --write",
     "eslint": "lb-eslint --report-unused-disable-directives .",
     "eslint:fix": "npm run eslint -- --fix",
-    "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "pretest": "npm run build",
+    "test": "echo 'No tests'",
     "posttest": "npm run lint",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
-    "prepublishOnly": "npm run clean && npm run build && npm run lint"
+    "prepublishOnly": "npm run build && npm run lint"
   },
   "repository": {
     "type": "git",
@@ -38,34 +39,26 @@
   "license": "MIT",
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"
   ],
-  "peerDependencies": {
-    "@loopback/boot": "^1.7.4",
-    "@loopback/context": "^3.11.2",
-    "@loopback/core": "^2.10.0",
-    "@loopback/rest": "^1.26.1"
-  },
   "dependencies": {
+    "@loopback/core": "^2.9.2",
     "casbin": "^5.1.5",
     "casbin-pg-adapter": "^1.4.0",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.19"
   },
   "devDependencies": {
-    "@loopback/boot": "^3.0.1",
-    "@loopback/build": "^6.2.4",
-    "@loopback/context": "^3.11.1",
-    "@loopback/core": "^2.10.1",
-    "@loopback/rest": "^7.0.1",
-    "@loopback/testlab": "^3.2.6",
-    "@loopback/tslint-config": "^2.1.0",
+    "@loopback/boot": "^2.5.1",
+    "@loopback/build": "^6.2.2",
+    "@loopback/context": "^3.10.1",
+    "@loopback/eslint-config": "^9.0.2",
+    "@loopback/rest": "^5.2.1",
+    "@loopback/testlab": "^3.2.1",
     "@types/lodash": "^4.14.161",
-    "@types/node": "^10.17.35",
-    "tslint": "^5.20.1",
-    "typescript": "^3.9.7"
+    "@types/node": "^10.17.27",
+    "eslint": "^7.10.0",
+    "typescript": "~3.9.7"
   }
 }

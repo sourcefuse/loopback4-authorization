@@ -7,8 +7,8 @@ export function authorize(metadata: AuthorizationMetadata) {
     AUTHORIZATION_METADATA_ACCESSOR,
     {
       permissions: metadata.permissions || [],
-      resource: metadata.resource || '',
-      isCasbinPolicy: metadata.isCasbinPolicy || false,
+      resource: metadata.resource ?? '',
+      isCasbinPolicy: metadata.isCasbinPolicy ?? false,
     },
   );
 }

@@ -1,16 +1,16 @@
-import { Getter, inject, Provider } from '@loopback/core';
-import { Request } from '@loopback/express';
-import { HttpErrors } from '@loopback/rest';
+import {Getter, inject, Provider} from '@loopback/core';
+import {Request} from '@loopback/express';
+import {HttpErrors} from '@loopback/rest';
 import * as casbin from 'casbin';
 import * as fs from 'fs';
 import * as path from 'path';
-import { AuthorizationBindings } from '../keys';
+import {AuthorizationBindings} from '../keys';
 import {
   AuthorizationMetadata,
   CasbinAuthorizeFn,
   CasbinEnforcerConfigGetterFn,
   IAuthUserWithPermissions,
-  ResourcePermissionObject
+  ResourcePermissionObject,
 } from '../types';
 const fsPromises = fs.promises;
 
@@ -20,11 +20,10 @@ export class CasbinAuthorizationProvider
     @inject.getter(AuthorizationBindings.METADATA)
     private readonly getCasbinMetadata: Getter<AuthorizationMetadata>,
     @inject(AuthorizationBindings.CASBIN_ENFORCER_CONFIG_GETTER)
-    private readonly getCasbinEnforcerConfig:
-      CasbinEnforcerConfigGetterFn,
+    private readonly getCasbinEnforcerConfig: CasbinEnforcerConfigGetterFn,
     @inject(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS)
     private readonly allowAlwaysPath: string[],
-  ) { }
+  ) {}
 
   value(): CasbinAuthorizeFn {
     return (response, resource, request) =>
@@ -50,7 +49,9 @@ export class CasbinAuthorizationProvider
         // This is for publicly open routes only
         return true;
       } else if (!metadata.resource) {
-        throw new HttpErrors.Unauthorized(`Resource parameter is missing in the decorator.`);
+        throw new HttpErrors.Unauthorized(
+          `Resource parameter is missing in the decorator.`,
+        );
       }
 
       const subject = this.getUserName(`${user.id}`);
@@ -62,11 +63,16 @@ export class CasbinAuthorizationProvider
       if (metadata.permissions && metadata.permissions.length > 0) {
         desiredPermissions = metadata.permissions;
       } else {
-        throw new HttpErrors.Unauthorized(`Permissions are missing in the decorator.`);
+        throw new HttpErrors.Unauthorized(
+          `Permissions are missing in the decorator.`,
+        );
       }
       // Fetch casbin config by invoking casbin-config-getter-provider
 
-      const casbinConfig = await this.getCasbinEnforcerConfig(user, metadata.resource);
+      const casbinConfig = await this.getCasbinEnforcerConfig(
+        user,
+        metadata.resource,
+      );
 
       let enforcer: casbin.Enforcer;
 
@@ -95,7 +101,6 @@ export class CasbinAuthorizationProvider
         const decision = await enforcer.enforce(subject, resource, permission);
         authDecision = authDecision || decision;
       }
-
     } catch (err) {
       throw new HttpErrors.Unauthorized(err);
     }
@@ -114,13 +119,11 @@ export class CasbinAuthorizationProvider
     resPermObj: ResourcePermissionObject[],
     subject: string,
   ): string {
-
     let result = '';
-    resPermObj.forEach((resPerm) => {
+    resPermObj.forEach(resPerm => {
       const policy = `p, ${subject}, ${resPerm.resource}, ${resPerm.permission}
         `;
       result += policy;
-
     });
 
     return result;
@@ -129,9 +132,7 @@ export class CasbinAuthorizationProvider
   checkIfAllowedAlways(req: Request): boolean {
     let allowed = false;
     // eslint-disable-next-line no-shadow
-    allowed = !!this.allowAlwaysPath.find(
-      (path) => req.path.indexOf(path) === 0,
-    );
+    allowed = !!this.allowAlwaysPath.find(path => req.path.indexOf(path) === 0);
     return allowed;
   }
 }

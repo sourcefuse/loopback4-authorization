@@ -1,11 +1,5 @@
-import {
-  Binding,
-  Component,
-  CoreBindings,
-  inject,
-  ProviderMap,
-} from '@loopback/core';
-import {RestApplication} from '@loopback/rest';
+import {Binding, Component, inject, ProviderMap} from '@loopback/core';
+
 import {AuthorizationBindings} from './keys';
 import {AuthorizeActionProvider} from './providers/authorization-action.provider';
 import {AuthorizationMetadataProvider} from './providers/authorization-metadata.provider';
@@ -18,8 +12,6 @@ export class AuthorizationComponent implements Component {
   bindings?: Binding[];
 
   constructor(
-    @inject(CoreBindings.APPLICATION_INSTANCE)
-    private readonly application: RestApplication,
     @inject(AuthorizationBindings.CONFIG)
     private readonly config?: AuthorizationConfig,
   ) {
@@ -32,13 +24,12 @@ export class AuthorizationComponent implements Component {
     };
 
     if (
-      config &&
-      config.allowAlwaysPaths &&
-      config.allowAlwaysPaths.length > 0
+      this.config?.allowAlwaysPaths &&
+      this.config?.allowAlwaysPaths?.length > 0
     ) {
       this.bindings = [
         Binding.bind(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS).to(
-          config.allowAlwaysPaths,
+          this.config.allowAlwaysPaths,
         ),
       ];
     } else {

@@ -1,4 +1,4 @@
-import { Request } from '@loopback/express';
+import {Request} from '@loopback/express';
 import PostgresAdapter from 'casbin-pg-adapter';
 
 /**
@@ -133,9 +133,7 @@ export interface IUserPrefs {
   locale?: string;
 }
 
-export interface IAuthUserWithPermissions<
-  ID = string,
-  > extends IAuthUser {
+export interface IAuthUserWithPermissions<ID = string> extends IAuthUser {
   id?: string;
   identifier?: ID;
   permissions: string[];
