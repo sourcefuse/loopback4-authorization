@@ -418,10 +418,10 @@ export class MySequence implements SequenceHandler {
     protected authenticateRequest: AuthenticateFn<AuthUser>,
     @inject(AuthenticationBindings.CLIENT_AUTH_ACTION)
     protected authenticateRequestClient: AuthenticateFn<AuthClient>,
-    @inject(AuthorizationBindings.AUTHORIZE_ACTION)
-    protected checkAuthorisation: AuthorizeFn,
-    @inject(AuthorizationBindings.USER_PERMISSIONS)
-    private readonly getUserPermissions: UserPermissionsFn<string>,
+    @inject(AuthorizationBindings.CASBIN_AUTHORIZE_ACTION)
+    protected checkAuthorisation: CasbinAuthorizeFn,
+    @inject(AuthorizationBindings.CASBIN_RESOURCE_MODIFIER_FN)
+    protected casbinResModifierFn: CasbinResourceModifierFn,
   ) {}
 
   async handle(context: RequestContext) {
