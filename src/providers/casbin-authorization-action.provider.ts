@@ -56,10 +56,9 @@ export class CasbinAuthorizationProvider
 
       const subject = this.getUserName(`${user.id}`);
 
-      // const object = resource;
-
       let desiredPermissions;
 
+      //Fetch permissions to check from decorator metadata
       if (metadata.permissions && metadata.permissions.length > 0) {
         desiredPermissions = metadata.permissions;
       } else {
@@ -67,8 +66,8 @@ export class CasbinAuthorizationProvider
           `Permissions are missing in the decorator.`,
         );
       }
-      // Fetch casbin config by invoking casbin-config-getter-provider
 
+      // Fetch casbin config by invoking casbin-config-getter-provider
       const casbinConfig = await this.getCasbinEnforcerConfig(
         user,
         metadata.resource,
@@ -97,6 +96,7 @@ export class CasbinAuthorizationProvider
         return false;
       }
 
+      // Use casbin enforce method to get authorization decision
       for (const permission of desiredPermissions) {
         const decision = await enforcer.enforce(subject, resource, permission);
         authDecision = authDecision || decision;
@@ -115,6 +115,7 @@ export class CasbinAuthorizationProvider
     return `u${id}`;
   }
 
+  // Create casbin policy for user based on ResourcePermission data provided by extension client
   createCasbinPolicy(
     resPermObj: ResourcePermissionObject[],
     subject: string,
