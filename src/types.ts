@@ -106,7 +106,7 @@ export interface CasbinEnforcerConfigGetterFn {
  * for integration with casbin, as per business logic
  */
 export interface CasbinResourceModifierFn {
-  (pathParams: string[]): Promise<string>;
+  (pathParams: string[], req: Request): Promise<string>;
 }
 
 /**

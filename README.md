@@ -23,7 +23,6 @@ It provides three ways of integration
 
 [Extension enhancement using CASBIN authorisation](#Extension-enhancement-using-CASBIN-authorisation)
 
-
 Refer to the usage section below for details on integration
 
 ## Install
@@ -119,6 +118,7 @@ export class User extends Entity implements UserPermissionsOverride<string> {
   }
 }
 ```
+
 - For method #3, we also provide a simple provider function [_AuthorizationBindings.USER_PERMISSIONS_](<[./src/providers/user-permissions.provider.ts](https://github.com/sourcefuse/loopback4-authorization/blob/master/src/providers/user-permissions.provider.ts)>) to evaluate the user permissions based on its role permissions and user-level overrides. Just inject it
 
 ```ts
@@ -272,6 +272,7 @@ export const enum PermissionKey {
 # Extension enhancement using CASBIN authorisation
 
 As a further enhancement to these methods, we are using [casbin library!](https://casbin.org/docs/en/overview) to define permissions at level of entity or resource associated with an API call. Casbin authorisation implementation can be performed in two ways:
+
 1. **Using default casbin policy document** - Define policy document in default casbin format in the app, and configure authorise decorator to use those policies.
 2. **Defining custom logic to form dynamic policies** - Implement dynamic permissions based on app logic in casbin-enforcer-config provider. Authorisation extension will dynamically create casbin policy using this business logic to give the authorisation decisions.
 
@@ -295,6 +296,7 @@ this.bind(AuthorizationBindings.CASBIN_RESOURCE_MODIFIER_FN).toProvider(
   CasbinResValModifierProvider,
 );
 ```
+
 - Implement the **Casbin Resource value modifier provider**. Customise the resource value based on business logic using route arguments parameter in the provider.
 
 ```ts
@@ -303,7 +305,7 @@ import {HttpErrors} from '@loopback/rest';
 import {
   AuthorizationBindings,
   AuthorizationMetadata,
-  CasbinResourceModifierFn
+  CasbinResourceModifierFn,
 } from 'loopback4-authorization';
 
 export class CasbinResValModifierProvider
@@ -330,13 +332,17 @@ export class CasbinResValModifierProvider
     return `${res}`;
   }
 }
-
 ```
+
 - Implement the **casbin enforcer config provider** . Provide the casbin model path. In case 1 of using [default casbin format policy!](https://casbin.org/docs/en/how-it-works), provide the casbin policy path. In other case of creating dynamic policy, provide the array of Resource-Permission objects for a given user, based on business logic.
 
 ```ts
 import {Provider} from '@loopback/context';
-import {CasbinConfig, CasbinEnforcerConfigGetterFn, IAuthUserWithPermissions} from 'loopback4-authorization';
+import {
+  CasbinConfig,
+  CasbinEnforcerConfigGetterFn,
+  IAuthUserWithPermissions,
+} from 'loopback4-authorization';
 import * as path from 'path';
 
 export class CasbinEnforcerConfigProvider
@@ -344,26 +350,33 @@ export class CasbinEnforcerConfigProvider
   constructor() {}
 
   value(): CasbinEnforcerConfigGetterFn {
-    return (authUser: IAuthUserWithPermissions, resource: string, isCasbinPolicy?: boolean) =>
-      this.action(authUser, resource, isCasbinPolicy);
+    return (
+      authUser: IAuthUserWithPermissions,
+      resource: string,
+      isCasbinPolicy?: boolean,
+    ) => this.action(authUser, resource, isCasbinPolicy);
   }
 
-  async action(authUser: IAuthUserWithPermissions, resource: string, isCasbinPolicy?: boolean): Promise<CasbinConfig> {
-    const model = path.resolve(
-      __dirname,
-      './../../fixtures/casbin/model.conf',
-    );
+  async action(
+    authUser: IAuthUserWithPermissions,
+    resource: string,
+    isCasbinPolicy?: boolean,
+  ): Promise<CasbinConfig> {
+    const model = path.resolve(__dirname, './../../fixtures/casbin/model.conf');
 
     // Write business logic to find out the allowed resource-permission sets for this user. Below is a dummy value.
     //const allowedRes = [{resource: 'session', permission: "CreateMeetingSession"}];
 
-    const policy = path.resolve(__dirname, './../../fixtures/casbin/policy.csv');
+    const policy = path.resolve(
+      __dirname,
+      './../../fixtures/casbin/policy.csv',
+    );
 
     const result: CasbinConfig = {
       model,
       //allowedRes,
-      policy
-    }
+      policy,
+    };
     return result;
   }
 }
@@ -418,10 +431,10 @@ export class MySequence implements SequenceHandler {
     protected authenticateRequest: AuthenticateFn<AuthUser>,
     @inject(AuthenticationBindings.CLIENT_AUTH_ACTION)
     protected authenticateRequestClient: AuthenticateFn<AuthClient>,
-    @inject(AuthorizationBindings.AUTHORIZE_ACTION)
-    protected checkAuthorisation: AuthorizeFn,
-    @inject(AuthorizationBindings.USER_PERMISSIONS)
-    private readonly getUserPermissions: UserPermissionsFn<string>,
+    @inject(AuthorizationBindings.CASBIN_AUTHORIZE_ACTION)
+    protected checkAuthorisation: CasbinAuthorizeFn,
+    @inject(AuthorizationBindings.CASBIN_RESOURCE_MODIFIER_FN)
+    protected casbinResModifierFn: CasbinResourceModifierFn,
   ) {}
 
   async handle(context: RequestContext) {
