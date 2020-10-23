@@ -271,7 +271,7 @@ export const enum PermissionKey {
 
 # Extension enhancement using CASBIN authorisation
 
-As a further enhancement to these methods, we are using [casbin library!](https://casbin.org/docs/en/overview) to define permissions at level of entity or resource associated with an API call. Casbin authorisation implementation can be performed in two ways:
+As a further enhancement to these methods, we are using [casbin library](https://casbin.org/docs/en/overview) to define permissions at level of entity or resource associated with an API call. Casbin authorisation implementation can be performed in two ways:
 
 1. **Using default casbin policy document** - Define policy document in default casbin format in the app, and configure authorise decorator to use those policies.
 2. **Defining custom logic to form dynamic policies** - Implement dynamic permissions based on app logic in casbin-enforcer-config provider. Authorisation extension will dynamically create casbin policy using this business logic to give the authorisation decisions.
@@ -334,7 +334,8 @@ export class CasbinResValModifierProvider
 }
 ```
 
-- Implement the **casbin enforcer config provider** . Provide the casbin model path. In case 1 of using [default casbin format policy!](https://casbin.org/docs/en/how-it-works), provide the casbin policy path. In other case of creating dynamic policy, provide the array of Resource-Permission objects for a given user, based on business logic.
+- Implement the **casbin enforcer config provider** . Provide the casbin model path. In case 1 of using [default casbin format policy](https://casbin.org/docs/en/how-it-works), provide the casbin policy path. In other case of creating dynamic policy, provide the array of Resource-Permission objects for a given user, based on business logic.
+  Model definition can be initialized from [.CONF file, from code, or from a string](https://casbin.org/docs/en/model-storage)
 
 ```ts
 import {Provider} from '@loopback/context';
@@ -362,7 +363,28 @@ export class CasbinEnforcerConfigProvider
     resource: string,
     isCasbinPolicy?: boolean,
   ): Promise<CasbinConfig> {
-    const model = path.resolve(__dirname, './../../fixtures/casbin/model.conf');
+    const model = path.resolve(__dirname, './../../fixtures/casbin/model.conf'); // Model initialization from file path
+    /**
+     * To initialize model from code, use
+     *      let m = new casbin.Model();
+     *      m.addDef('r', 'r', 'sub, obj, act'); and so on...
+     *
+     * To initialize model from string, use
+     *      const text = `
+            [request_definition]
+            r = sub, obj, act
+
+            [policy_definition]
+            p = sub, obj, act
+
+            [policy_effect]
+            e = some(where (p.eft == allow))
+
+            [matchers]
+            m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+            `;
+     *      const model = casbin.newModelFromString(text);
+     */
 
     // Write business logic to find out the allowed resource-permission sets for this user. Below is a dummy value.
     //const allowedRes = [{resource: 'session', permission: "CreateMeetingSession"}];
