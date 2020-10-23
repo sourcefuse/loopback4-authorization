@@ -54,12 +54,15 @@ export class CasbinAuthorizationProvider
         );
       }
 
-      const subject = this.getUserName(`${user.id}`);
+      if (!user.id) {
+        throw new HttpErrors.Unauthorized(`User not found.`);
+      }
 
-      // const object = resource;
+      const subject = this.getUserName(`${user.id}`);
 
       let desiredPermissions;
 
+      //Fetch permissions to check from decorator metadata
       if (metadata.permissions && metadata.permissions.length > 0) {
         desiredPermissions = metadata.permissions;
       } else {
@@ -67,11 +70,12 @@ export class CasbinAuthorizationProvider
           `Permissions are missing in the decorator.`,
         );
       }
-      // Fetch casbin config by invoking casbin-config-getter-provider
 
+      // Fetch casbin config by invoking casbin-config-getter-provider
       const casbinConfig = await this.getCasbinEnforcerConfig(
         user,
         metadata.resource,
+        metadata.isCasbinPolicy,
       );
 
       let enforcer: casbin.Enforcer;
@@ -92,17 +96,20 @@ export class CasbinAuthorizationProvider
         const baseDir = path.join(__dirname, '../../src/policy.csv');
         await fsPromises.writeFile(baseDir, policy);
 
-        enforcer = await casbin.newEnforcer(casbinConfig.model, baseDir);
+        const policyAdapter = new casbin.FileAdapter(baseDir);
+
+        enforcer = await casbin.newEnforcer(casbinConfig.model, policyAdapter);
       } else {
         return false;
       }
 
+      // Use casbin enforce method to get authorization decision
       for (const permission of desiredPermissions) {
         const decision = await enforcer.enforce(subject, resource, permission);
         authDecision = authDecision || decision;
       }
     } catch (err) {
-      throw new HttpErrors.Unauthorized(err);
+      throw new HttpErrors.Unauthorized(err.message);
     }
 
     return authDecision;
@@ -115,6 +122,7 @@ export class CasbinAuthorizationProvider
     return `u${id}`;
   }
 
+  // Create casbin policy for user based on ResourcePermission data provided by extension client
   createCasbinPolicy(
     resPermObj: ResourcePermissionObject[],
     subject: string,
