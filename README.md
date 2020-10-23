@@ -313,14 +313,24 @@ export class CasbinResValModifierProvider
   constructor(
     @inject.getter(AuthorizationBindings.METADATA)
     private readonly getCasbinMetadata: Getter<AuthorizationMetadata>,
+    @inject(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS)
+    private readonly allowAlwaysPath: string[],
   ) {}
 
   value(): CasbinResourceModifierFn {
-    return (pathParams: string[]) => this.action(pathParams);
+    return (pathParams: string[], req: Request) => this.action(pathParams, req);
   }
 
-  async action(pathParams: string[]): Promise<string> {
+  async action(pathParams: string[], req: Request): Promise<string> {
     const metadata: AuthorizationMetadata = await this.getCasbinMetadata();
+
+    if (
+      !metadata &&
+      !!this.allowAlwaysPath.find(path => req.path.indexOf(path) === 0)
+    ) {
+      return '';
+    }
+
     if (!metadata) {
       throw new HttpErrors.InternalServerError(`Metadata object not found`);
     }
@@ -334,8 +344,10 @@ export class CasbinResValModifierProvider
 }
 ```
 
-- Implement the **casbin enforcer config provider** . Provide the casbin model path. In case 1 of using [default casbin format policy](https://casbin.org/docs/en/how-it-works), provide the casbin policy path. In other case of creating dynamic policy, provide the array of Resource-Permission objects for a given user, based on business logic.
-  Model definition can be initialized from [.CONF file, from code, or from a string](https://casbin.org/docs/en/model-storage)
+- Implement the **casbin enforcer config provider** . Provide the casbin model path. Model definition can be initialized from [.CONF file, from code, or from a string](https://casbin.org/docs/en/model-storage).
+  In the case of policy creation being handled by extension (isCasbinPolicy parameter is false), provide the array of Resource-Permission objects for a given user, based on business logic.
+  In other case, provide the policy from file or as CSV string or from [casbin Adapters](https://casbin.org/docs/en/adapters).
+  **NOTE**: In the second case, if model is initialized from .CONF file, then any of the above formats can be used for policy. But if model is being initialised from code or string, then policy should be provided as [casbin adapter](https://casbin.org/docs/en/adapters) only.
 
 ```ts
 import {Provider} from '@loopback/context';
@@ -365,24 +377,26 @@ export class CasbinEnforcerConfigProvider
   ): Promise<CasbinConfig> {
     const model = path.resolve(__dirname, './../../fixtures/casbin/model.conf'); // Model initialization from file path
     /**
+     * import * as casbin from 'casbin';
+     *
      * To initialize model from code, use
      *      let m = new casbin.Model();
      *      m.addDef('r', 'r', 'sub, obj, act'); and so on...
      *
      * To initialize model from string, use
      *      const text = `
-            [request_definition]
-            r = sub, obj, act
-
-            [policy_definition]
-            p = sub, obj, act
-
-            [policy_effect]
-            e = some(where (p.eft == allow))
-
-            [matchers]
-            m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
-            `;
+     *      [request_definition]
+     *     r = sub, obj, act
+     *
+     *      [policy_definition]
+     *      p = sub, obj, act
+     *
+     *      [policy_effect]
+     *      e = some(where (p.eft == allow))
+     *
+     *      [matchers]
+     *      m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+     *       `;
      *      const model = casbin.newModelFromString(text);
      */
 

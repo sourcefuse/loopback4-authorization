@@ -54,6 +54,10 @@ export class CasbinAuthorizationProvider
         );
       }
 
+      if (!user.id) {
+        throw new HttpErrors.Unauthorized(`User not found.`);
+      }
+
       const subject = this.getUserName(`${user.id}`);
 
       let desiredPermissions;
@@ -71,6 +75,7 @@ export class CasbinAuthorizationProvider
       const casbinConfig = await this.getCasbinEnforcerConfig(
         user,
         metadata.resource,
+        metadata.isCasbinPolicy,
       );
 
       let enforcer: casbin.Enforcer;
@@ -104,7 +109,7 @@ export class CasbinAuthorizationProvider
         authDecision = authDecision || decision;
       }
     } catch (err) {
-      throw new HttpErrors.Unauthorized(err);
+      throw new HttpErrors.Unauthorized(err.message);
     }
 
     return authDecision;
