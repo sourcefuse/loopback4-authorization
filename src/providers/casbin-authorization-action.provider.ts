@@ -91,7 +91,9 @@ export class CasbinAuthorizationProvider
         const baseDir = path.join(__dirname, '../../src/policy.csv');
         await fsPromises.writeFile(baseDir, policy);
 
-        enforcer = await casbin.newEnforcer(casbinConfig.model, baseDir);
+        const policyAdapter = new casbin.FileAdapter(baseDir);
+
+        enforcer = await casbin.newEnforcer(casbinConfig.model, policyAdapter);
       } else {
         return false;
       }

@@ -1,4 +1,5 @@
 import {Request} from '@loopback/express';
+import {FileAdapter, Model} from 'casbin';
 import PostgresAdapter from 'casbin-pg-adapter';
 
 /**
@@ -113,8 +114,8 @@ export interface CasbinResourceModifierFn {
  * Casbin config object
  */
 export interface CasbinConfig {
-  model: string;
-  policy?: string | PostgresAdapter;
+  model: string | Model;
+  policy?: string | PostgresAdapter | FileAdapter;
   allowedRes?: ResourcePermissionObject[];
 }
 
