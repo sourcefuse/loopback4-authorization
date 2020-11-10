@@ -2,7 +2,6 @@ import {Getter, inject, Provider} from '@loopback/core';
 import {Request} from '@loopback/express';
 import {HttpErrors} from '@loopback/rest';
 import * as casbin from 'casbin';
-import * as fs from 'fs';
 
 import {AuthorizationBindings} from '../keys';
 import {
@@ -12,7 +11,6 @@ import {
   IAuthUserWithPermissions,
   ResourcePermissionObject,
 } from '../types';
-const fsPromises = fs.promises;
 
 export class CasbinAuthorizationProvider
   implements Provider<CasbinAuthorizeFn> {
@@ -94,7 +92,7 @@ export class CasbinAuthorizationProvider
         );
         const stringAdapter = new casbin.StringAdapter(policy);
         enforcer = new casbin.Enforcer();
-        enforcer.initWithModelAndAdapter(
+        await enforcer.initWithModelAndAdapter(
           casbinConfig.model as casbin.Model,
           stringAdapter,
         );
@@ -138,7 +136,6 @@ export class CasbinAuthorizationProvider
 
   checkIfAllowedAlways(req: Request): boolean {
     let allowed = false;
-    // eslint-disable-next-line no-shadow
     allowed = !!this.allowAlwaysPath.find(path => req.path.indexOf(path) === 0);
     return allowed;
   }
