@@ -3,7 +3,7 @@ import {Request} from '@loopback/express';
 import {HttpErrors} from '@loopback/rest';
 import * as casbin from 'casbin';
 import * as fs from 'fs';
-import * as path from 'path';
+
 import {AuthorizationBindings} from '../keys';
 import {
   AuthorizationMetadata,
@@ -62,7 +62,6 @@ export class CasbinAuthorizationProvider
 
       let desiredPermissions;
 
-      //Fetch permissions to check from decorator metadata
       if (metadata.permissions && metadata.permissions.length > 0) {
         desiredPermissions = metadata.permissions;
       } else {
@@ -93,12 +92,12 @@ export class CasbinAuthorizationProvider
           casbinConfig.allowedRes,
           subject,
         );
-        const baseDir = path.join(__dirname, '../../src/policy.csv');
-        await fsPromises.writeFile(baseDir, policy);
-
-        const policyAdapter = new casbin.FileAdapter(baseDir);
-
-        enforcer = await casbin.newEnforcer(casbinConfig.model, policyAdapter);
+        const stringAdapter = new casbin.StringAdapter(policy);
+        enforcer = new casbin.Enforcer();
+        enforcer.initWithModelAndAdapter(
+          casbinConfig.model as casbin.Model,
+          stringAdapter,
+        );
       } else {
         return false;
       }
