@@ -147,7 +147,7 @@ export interface IAuthUserWithPermissions<ID = string> extends IAuthUser {
   middleName?: string;
   allowedResources?: string[];
 }
-export interface UserResource<ResourceValueType> {
+export interface IUserResource<ResourceValueType> {
   resourceName: string;
   resourceValue: ResourceValueType;
   allowed: boolean;
