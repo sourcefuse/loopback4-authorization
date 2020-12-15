@@ -44,21 +44,21 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/core": "^2.9.2",
+    "@loopback/core": "^2.12.0",
     "casbin": "^5.1.5",
     "casbin-pg-adapter": "^1.4.0",
-    "lodash": "^4.17.19"
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
-    "@loopback/boot": "^2.5.1",
-    "@loopback/build": "^6.2.2",
-    "@loopback/context": "^3.10.1",
-    "@loopback/eslint-config": "^9.0.2",
-    "@loopback/rest": "^5.2.1",
-    "@loopback/testlab": "^3.2.1",
+    "@loopback/boot": "^3.1.0",
+    "@loopback/build": "^6.2.6",
+    "@loopback/context": "^3.13.0",
+    "@loopback/eslint-config": "^10.0.2",
+    "@loopback/rest": "^9.0.0",
+    "@loopback/testlab": "^3.2.8",
     "@types/lodash": "^4.14.161",
-    "@types/node": "^10.17.27",
-    "eslint": "^7.10.0",
-    "typescript": "~3.9.7"
+    "@types/node": "^10.17.44",
+    "eslint": "^7.12.1",
+    "typescript": "~4.0.5"
   }
 }
