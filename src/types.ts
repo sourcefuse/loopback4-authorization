@@ -18,9 +18,11 @@ export interface AuthorizeFn {
 export interface CasbinAuthorizeFn {
   // user - User object corresponding to the logged in user
   // resVal - value of the resource for which authorisation is being sought
-  (user: IAuthUserWithPermissions, resVal: string, request: Request): Promise<
-    boolean
-  >;
+  (
+    user: IAuthUserWithPermissions,
+    resVal: string,
+    request: Request,
+  ): Promise<boolean>;
 }
 /**
  * Authorization metadata interface for the method decorator

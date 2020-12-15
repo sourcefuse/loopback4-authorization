@@ -30,13 +30,13 @@ export namespace AuthorizationBindings {
     'sf.userAuthorization.actions.userPermissions',
   );
 
-  export const CASBIN_ENFORCER_CONFIG_GETTER = BindingKey.create<
-    CasbinEnforcerConfigGetterFn
-  >('sf.userAuthorization.actions.casbin.config');
+  export const CASBIN_ENFORCER_CONFIG_GETTER = BindingKey.create<CasbinEnforcerConfigGetterFn>(
+    'sf.userAuthorization.actions.casbin.config',
+  );
 
-  export const CASBIN_RESOURCE_MODIFIER_FN = BindingKey.create<
-    CasbinResourceModifierFn
-  >('sf.userAuthorization.actions.casbin.resourceModifier');
+  export const CASBIN_RESOURCE_MODIFIER_FN = BindingKey.create<CasbinResourceModifierFn>(
+    'sf.userAuthorization.actions.casbin.resourceModifier',
+  );
 
   export const CONFIG = BindingKey.create<AuthorizationConfig>(
     'sf.userAuthorization.config',
