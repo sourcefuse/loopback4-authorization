@@ -2,3 +2,5 @@ node_modules/
 dist/
 coverage/
 api-docs/
+.cz-config.js
+commitlint.config.js
