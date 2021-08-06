@@ -4,3 +4,4 @@ coverage/
 api-docs/
 .cz-config.js
 commitlint.config.js
+.nyc_output
