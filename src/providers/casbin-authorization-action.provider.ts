@@ -42,7 +42,7 @@ export class CasbinAuthorizationProvider
         return true;
       } else if (!metadata) {
         return false;
-      } else if (metadata.permissions.indexOf('*') === 0) {
+      } else if (metadata.permissions?.indexOf('*') === 0) {
         // Return immediately with true, if allowed to all
         // This is for publicly open routes only
         return true;
