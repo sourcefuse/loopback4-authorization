@@ -17,8 +17,8 @@ export class AuthorizationComponent implements Component {
   ) {
     this.providers = {
       [AuthorizationBindings.AUTHORIZE_ACTION.key]: AuthorizeActionProvider,
-      [AuthorizationBindings.CASBIN_AUTHORIZE_ACTION
-        .key]: CasbinAuthorizationProvider,
+      [AuthorizationBindings.CASBIN_AUTHORIZE_ACTION.key]:
+        CasbinAuthorizationProvider,
       [AuthorizationBindings.METADATA.key]: AuthorizationMetadataProvider,
       [AuthorizationBindings.USER_PERMISSIONS.key]: UserPermissionsProvider,
     };

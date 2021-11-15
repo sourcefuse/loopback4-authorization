@@ -17,14 +17,15 @@ type OperationMeta = {
 const OAI3KEY_METHODS = 'openapi-v3:methods';
 
 export function authorize(metadata: AuthorizationMetadata) {
-  const authorizedecorator = MethodDecoratorFactory.createDecorator<AuthorizationMetadata>(
-    AUTHORIZATION_METADATA_ACCESSOR,
-    {
-      permissions: metadata.permissions || [],
-      resource: metadata.resource ?? '',
-      isCasbinPolicy: metadata.isCasbinPolicy ?? false,
-    },
-  );
+  const authorizedecorator =
+    MethodDecoratorFactory.createDecorator<AuthorizationMetadata>(
+      AUTHORIZATION_METADATA_ACCESSOR,
+      {
+        permissions: metadata.permissions || [],
+        resource: metadata.resource ?? '',
+        isCasbinPolicy: metadata.isCasbinPolicy ?? false,
+      },
+    );
   const authorizationWithMetadata = <T>(
     target: Object,
     propertyKey: string,

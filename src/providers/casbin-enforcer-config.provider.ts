@@ -4,7 +4,8 @@ import {CasbinEnforcerConfigGetterFn, IAuthUserWithPermissions} from '../types';
 import {HttpErrors} from '@loopback/rest';
 
 export class CasbinEnforcerProvider
-  implements Provider<CasbinEnforcerConfigGetterFn> {
+  implements Provider<CasbinEnforcerConfigGetterFn>
+{
   constructor() {}
 
   value(): CasbinEnforcerConfigGetterFn {

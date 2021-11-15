@@ -3,7 +3,8 @@ import {Provider} from '@loopback/context';
 import {UserPermission, UserPermissionsFn} from '../types';
 
 export class UserPermissionsProvider
-  implements Provider<UserPermissionsFn<string>> {
+  implements Provider<UserPermissionsFn<string>>
+{
   constructor() {}
 
   value(): UserPermissionsFn<string> {

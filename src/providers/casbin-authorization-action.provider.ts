@@ -13,7 +13,8 @@ import {
 } from '../types';
 
 export class CasbinAuthorizationProvider
-  implements Provider<CasbinAuthorizeFn> {
+  implements Provider<CasbinAuthorizeFn>
+{
   constructor(
     @inject.getter(AuthorizationBindings.METADATA)
     private readonly getCasbinMetadata: Getter<AuthorizationMetadata>,

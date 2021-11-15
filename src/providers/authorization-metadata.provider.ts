@@ -10,7 +10,8 @@ import {AUTHORIZATION_METADATA_ACCESSOR} from '../keys';
 import {AuthorizationMetadata} from '../types';
 
 export class AuthorizationMetadataProvider
-  implements Provider<AuthorizationMetadata | undefined> {
+  implements Provider<AuthorizationMetadata | undefined>
+{
   constructor(
     @inject(CoreBindings.CONTROLLER_CLASS, {optional: true})
     private readonly controllerClass: Constructor<{}>,
