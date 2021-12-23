@@ -47,7 +47,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/core": "^2.18.0",
+    "@loopback/core": "^3.0.0",
     "casbin": "^5.11.5",
     "casbin-pg-adapter": "^1.4.0",
     "lodash": "^4.17.21"
@@ -55,12 +55,12 @@
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
-    "@loopback/boot": "^3.4.4",
-    "@loopback/build": "^7.0.2",
-    "@loopback/context": "^3.18.0",
-    "@loopback/eslint-config": "^11.0.2",
-    "@loopback/rest": "^10.1.0",
-    "@loopback/testlab": "^3.4.4",
+    "@loopback/boot": "^4.0.0",
+    "@loopback/build": "^8.0.0",
+    "@loopback/context": "^4.0.0",
+    "@loopback/eslint-config": "^12.0.0",
+    "@loopback/rest": "^11.0.0",
+    "@loopback/testlab": "^4.0.0",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
     "@types/lodash": "^4.14.161",
@@ -73,7 +73,7 @@
     "fs-extra": "^10.0.0",
     "husky": "^7.0.1",
     "semantic-release": "^17.4.4",
-    "typescript": "~4.4.4"
+    "typescript": "~4.5.2"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"

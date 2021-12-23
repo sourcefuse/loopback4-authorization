@@ -3,10 +3,9 @@
 [![LoopBack](<https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
 
 [![Node version](https://img.shields.io/node/v/loopback4-authorization.svg?style=flat-square)](https://nodejs.org/en/download/)
-[![Dependencies Status](https://img.shields.io/david/sourcefuse/loopback4-authorization.svg?style=flat-square)](https://github.com/sourcefuse/loopback4-authorization)
-[![Loopback Core Version](https://img.shields.io/npm/dependency-version/loopback4-authorization/dev/@loopback/core.svg?color=dark%20green&style=flat-square)](https://github.com/strongloop/loopback-next)
+[![Loopback Core Version](https://img.shields.io/npm/dependency-version/loopback4-authorization/@loopback/core.svg?color=dark%20green&style=flat-square)](https://github.com/strongloop/loopback-next)
 [![Loopback Build Version](https://img.shields.io/npm/dependency-version/loopback4-authorization/dev/@loopback/build.svg?color=dark%20green&style=flat-square)](https://github.com/strongloop/loopback-next/tree/master/packages/build)
-[![npm vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/loopback4-authorization.svg?label=npm%20vulnerabilities&style=flat-square)](https://www.npmjs.com/package/loopback4-authorization)
+[![npm vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/loopback4-authorization.svg?style=flat-square)](https://www.npmjs.com/package/loopback4-authorization)
 
 [![Latest version](https://img.shields.io/npm/v/loopback4-authorization.svg?style=flat-square)](https://www.npmjs.com/package/loopback4-authorization)
 [![License](https://img.shields.io/github/license/sourcefuse/loopback4-authorization.svg?color=blue&label=License&style=flat-square)](https://github.com/sourcefuse/loopback4-authorization/blob/master/LICENSE)
@@ -309,7 +308,8 @@ import {
 } from 'loopback4-authorization';
 
 export class CasbinResValModifierProvider
-  implements Provider<CasbinResourceModifierFn> {
+  implements Provider<CasbinResourceModifierFn>
+{
   constructor(
     @inject.getter(AuthorizationBindings.METADATA)
     private readonly getCasbinMetadata: Getter<AuthorizationMetadata>,
@@ -359,7 +359,8 @@ import {
 import * as path from 'path';
 
 export class CasbinEnforcerConfigProvider
-  implements Provider<CasbinEnforcerConfigGetterFn> {
+  implements Provider<CasbinEnforcerConfigGetterFn>
+{
   constructor() {}
 
   value(): CasbinEnforcerConfigGetterFn {
