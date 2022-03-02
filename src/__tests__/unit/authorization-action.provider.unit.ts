@@ -1,4 +1,4 @@
-import {AuthorizationMetadata} from '../../types';
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import {
   expect,
   ShotRequestOptions,
@@ -7,6 +7,7 @@ import {
 } from '@loopback/testlab';
 import {Request} from 'express';
 import {AuthorizeActionProvider} from '../../providers';
+import {AuthorizationMetadata} from '../../types';
 import {mockUser} from './data/mock-user';
 
 const mockPermissions: AuthorizationMetadata = {

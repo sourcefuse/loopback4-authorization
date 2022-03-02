@@ -1,17 +1,18 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import {
   expect,
   ShotRequestOptions,
   sinon,
   stubExpressContext,
 } from '@loopback/testlab';
-import {CasbinAuthorizationProvider} from '../../providers';
-import {Request} from 'express';
-import {mockUser} from './data/mock-user';
-import {PermissionKeys} from './data';
 import * as casbin from 'casbin';
-import {model} from './data/mock-model';
 import {StringAdapter} from 'casbin';
+import {Request} from 'express';
+import {CasbinAuthorizationProvider} from '../../providers';
+import {PermissionKeys} from './data';
+import {model} from './data/mock-model';
 import {policy} from './data/mock-policy';
+import {mockUser} from './data/mock-user';
 
 describe('CasbinAuthorizeActionProvider', () => {
   describe('With CasbinPolicy true', () => {
