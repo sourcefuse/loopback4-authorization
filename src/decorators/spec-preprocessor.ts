@@ -4,6 +4,7 @@ import {AuthorizationMetadata} from '../types';
 const defaultResponse = (ctor: {name: string}, op: string) => ({
   '200': {
     description: `Return value of ${ctor.name}.${op}`,
+    content: {},
   },
 });
 
