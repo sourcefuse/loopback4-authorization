@@ -5,3 +5,4 @@ api-docs/
 .cz-config.js
 commitlint.config.js
 .nyc_output
+.eslintrc.js
