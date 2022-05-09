@@ -1,4 +1,3 @@
-import {AuthorizationMetadata} from '../../types';
 import {
   expect,
   ShotRequestOptions,
@@ -7,6 +6,7 @@ import {
 } from '@loopback/testlab';
 import {Request} from 'express';
 import {AuthorizeActionProvider} from '../../providers';
+import {AuthorizationMetadata} from '../../types';
 import {mockUser} from './data/mock-user';
 import {Context} from '@loopback/core';
 
