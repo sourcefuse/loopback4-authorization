@@ -5,6 +5,8 @@ import {AuthorizationMetadata, AuthorizeFn} from '../types';
 
 import {intersection} from 'lodash';
 import {Request} from 'express';
+import {HttpErrors, RestBindings} from '@loopback/rest';
+import {CoreBindings, Context} from '@loopback/core';
 
 export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
   constructor(
@@ -12,6 +14,8 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
     private readonly getMetadata: Getter<AuthorizationMetadata>,
     @inject(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS)
     private readonly allowAlwaysPath: string[],
+    @inject(RestBindings.Http.CONTEXT)
+    private readonly requestConext: Context,
   ) {}
 
   value(): AuthorizeFn {
@@ -20,6 +24,15 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
 
   async action(userPermissions: string[], request?: Request): Promise<boolean> {
     const metadata: AuthorizationMetadata = await this.getMetadata();
+    let methodName = '';
+    try {
+      methodName = await this.requestConext.get(
+        CoreBindings.CONTROLLER_METHOD_NAME,
+      );
+    } catch (error) {
+      throw new HttpErrors.NotFound("API not found !");
+    }
+
     if (request && this.checkIfAllowedAlways(request)) {
       return true;
     } else if (!metadata) {
