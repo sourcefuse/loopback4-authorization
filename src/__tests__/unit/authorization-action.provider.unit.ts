@@ -112,7 +112,7 @@ describe('AuthorizeActionProvider', () => {
     ).value();
     const result = await action(mockUser.permissions).catch(err => err);
     expect(result).be.instanceOf(Error);
-    expect(result).to.have.property('message').which.eql('Not Found');
+    expect(result).to.have.property('message').which.eql('API not found !');
   });
   function givenRequest(options?: ShotRequestOptions): Request {
     return stubExpressContext(options).request;

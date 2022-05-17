@@ -15,7 +15,7 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
     @inject(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS)
     private readonly allowAlwaysPath: string[],
     @inject(RestBindings.Http.CONTEXT)
-    private readonly requestConext: Context,
+    private readonly requestContext: Context,
   ) {}
 
   value(): AuthorizeFn {
@@ -26,11 +26,12 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
     const metadata: AuthorizationMetadata = await this.getMetadata();
     let methodName = '';
     try {
-      methodName = await this.requestConext.get(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      methodName = await this.requestContext.get(
         CoreBindings.CONTROLLER_METHOD_NAME,
       );
     } catch (error) {
-      throw new HttpErrors.NotFound("API not found !");
+      throw new HttpErrors.NotFound('API not found !');
     }
 
     if (request && this.checkIfAllowedAlways(request)) {
