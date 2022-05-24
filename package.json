@@ -32,8 +32,7 @@
     "posttest": "npm run lint",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "prepublishOnly": "npm run build && npm run lint",
-    "prepare": "husky install",
-    "postinstall": "patch-package"
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -48,7 +47,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/core": "^3.1.2",
+    "@loopback/core": "^4.0.0",
     "casbin": "^5.14.0",
     "casbin-pg-adapter": "^1.4.0",
     "lodash": "^4.17.21"
@@ -56,40 +55,33 @@
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
-    "@loopback/boot": "^4.1.2",
-    "@loopback/build": "^8.1.2",
-    "@loopback/context": "^4.1.2",
-    "@loopback/eslint-config": "^12.0.4",
-    "@loopback/rest": "^11.1.2",
-    "@loopback/testlab": "^4.1.2",
+    "@loopback/boot": "^5.0.0",
+    "@loopback/build": "^9.0.0",
+    "@loopback/context": "^5.0.0",
+    "@loopback/eslint-config": "^13.0.0",
+    "@loopback/rest": "^12.0.0",
+    "@loopback/testlab": "^5.0.0",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/npm": "^9.0.1",
     "@semantic-release/release-notes-generator": "^10.0.3",
     "@types/lodash": "^4.14.181",
-    "@types/node": "^12.20.47",
+    "@types/node": "^12.20.50",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "cz-customizable": "^6.3.0",
     "cz-customizable-ghooks": "^2.0.0",
-    "eslint": "^8.12.0",
-    "fs-extra": "^10.0.1",
+    "eslint": "^8.14.0",
+    "fs-extra": "^10.1.0",
     "husky": "^7.0.4",
-    "patch-package": "^6.4.7",
     "semantic-release": "^19.0.2",
-    "typescript": "~4.6.3"
-  },
-  "peerDependencies": {
-    "patch-package": "^6.4.7"
+    "typescript": "~4.6.4"
   },
   "overrides": {
     "commitizen": {
       "minimist": "^1.2.6",
       "cz-conventional-changelog": "^3.3.0"
-    },
-    "jake": {
-      "async": "^3.2.3"
     }
   },
   "publishConfig": {

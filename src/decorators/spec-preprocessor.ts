@@ -2,7 +2,6 @@ import {OperationObject} from 'openapi3-ts';
 import {AuthorizationMetadata} from '../types';
 
 const defaultResponse = (ctor: {name: string}, op: string) => ({
-  // eslint-disable-next-line  @typescript-eslint/naming-convention
   '200': {
     description: `Return value of ${ctor.name}.${op}`,
     content: {},
