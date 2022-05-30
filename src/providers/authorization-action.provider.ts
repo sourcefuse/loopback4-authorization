@@ -24,25 +24,22 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
 
   async action(userPermissions: string[], request?: Request): Promise<boolean> {
     const metadata: AuthorizationMetadata = await this.getMetadata();
-    let methodName = '';
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      methodName = await this.requestContext.get(
-        CoreBindings.CONTROLLER_METHOD_NAME,
-      );
-    } catch (error) {
-      throw new HttpErrors.NotFound('API not found !');
-    }
 
     if (request && this.checkIfAllowedAlways(request)) {
       return true;
     } else if (!metadata) {
-      return false;
+      try {
+        await this.requestContext.get(CoreBindings.CONTROLLER_METHOD_NAME);
+        return false;
+      } catch (error) {
+        throw new HttpErrors.NotFound('API not found !');
+      }
     } else if (metadata.permissions.indexOf('*') === 0) {
       // Return immediately with true, if allowed to all
       // This is for publicly open routes only
       return true;
     }
+
     const permissionsToCheck = metadata.permissions;
     return intersection(userPermissions, permissionsToCheck).length > 0;
   }
