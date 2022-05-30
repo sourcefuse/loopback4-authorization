@@ -1,11 +1,4 @@
-import {
-  Binding,
-  Component,
-  createBindingFromClass,
-  inject,
-  ProviderMap,
-} from '@loopback/core';
-import {DescSpecEnhancer} from './enhancer/spec-description-enhancer';
+import {Binding, Component, inject, ProviderMap} from '@loopback/core';
 
 import {AuthorizationBindings} from './keys';
 import {AuthorizeActionProvider} from './providers/authorization-action.provider';
@@ -46,6 +39,5 @@ export class AuthorizationComponent implements Component {
         ]),
       ];
     }
-    this.bindings.push(createBindingFromClass(DescSpecEnhancer));
   }
 }
