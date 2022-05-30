@@ -1,3 +1,11 @@
+## [5.0.5](https://github.com/sourcefuse/loopback4-authorization/compare/v5.0.4...v5.0.5) (2022-05-30)
+
+
+### Bug Fixes
+
+* **core:** remove spec enhancer by default ([#53](https://github.com/sourcefuse/loopback4-authorization/issues/53)) ([b76cfb8](https://github.com/sourcefuse/loopback4-authorization/commit/b76cfb8aa9ecf73c24fe9f003ff1d2896977c759)), closes [#0](https://github.com/sourcefuse/loopback4-authorization/issues/0)
+* **provider:** change order of not found check ([#52](https://github.com/sourcefuse/loopback4-authorization/issues/52)) ([3213f6d](https://github.com/sourcefuse/loopback4-authorization/commit/3213f6d4ceab7a2d5d2dc236561dbda3de241ec5)), closes [#51](https://github.com/sourcefuse/loopback4-authorization/issues/51)
+
 ## [5.0.4](https://github.com/sourcefuse/loopback4-authorization/compare/v5.0.3...v5.0.4) (2022-05-25)
 
 

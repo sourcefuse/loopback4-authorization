@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthorizationComponent = void 0;
 const tslib_1 = require("tslib");
 const core_1 = require("@loopback/core");
-const spec_description_enhancer_1 = require("./enhancer/spec-description-enhancer");
 const keys_1 = require("./keys");
 const authorization_action_provider_1 = require("./providers/authorization-action.provider");
 const authorization_metadata_provider_1 = require("./providers/authorization-metadata.provider");
@@ -32,7 +31,6 @@ let AuthorizationComponent = class AuthorizationComponent {
                 ]),
             ];
         }
-        this.bindings.push((0, core_1.createBindingFromClass)(spec_description_enhancer_1.DescSpecEnhancer));
     }
 };
 AuthorizationComponent = tslib_1.__decorate([

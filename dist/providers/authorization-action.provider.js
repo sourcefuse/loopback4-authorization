@@ -18,19 +18,17 @@ let AuthorizeActionProvider = class AuthorizeActionProvider {
     }
     async action(userPermissions, request) {
         const metadata = await this.getMetadata();
-        let methodName = '';
-        try {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            methodName = await this.requestContext.get(core_1.CoreBindings.CONTROLLER_METHOD_NAME);
-        }
-        catch (error) {
-            throw new rest_1.HttpErrors.NotFound('API not found !');
-        }
         if (request && this.checkIfAllowedAlways(request)) {
             return true;
         }
         else if (!metadata) {
-            return false;
+            try {
+                await this.requestContext.get(core_1.CoreBindings.CONTROLLER_METHOD_NAME);
+                return false;
+            }
+            catch (error) {
+                throw new rest_1.HttpErrors.NotFound('API not found !');
+            }
         }
         else if (metadata.permissions.indexOf('*') === 0) {
             // Return immediately with true, if allowed to all
