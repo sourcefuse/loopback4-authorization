@@ -1,3 +1,5 @@
+## [5.0.7](https://github.com/sourcefuse/loopback4-authorization/compare/v5.0.6...v5.0.7) (2022-09-08)
+
 ## [5.0.6](https://github.com/sourcefuse/loopback4-authorization/compare/v5.0.5...v5.0.6) (2022-06-17)
 
 ## [5.0.5](https://github.com/sourcefuse/loopback4-authorization/compare/v5.0.4...v5.0.5) (2022-05-30)

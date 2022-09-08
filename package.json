@@ -1,6 +1,6 @@
 {
   "name": "loopback4-authorization",
-  "version": "5.0.6",
+  "version": "5.0.7",
   "description": "An authorization extension for loopback-next applications",
   "keywords": [
     "loopback-extension",
@@ -79,9 +79,9 @@
     "typescript": "~4.7.4"
   },
   "overrides": {
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-   }
+    "publishConfig": {
+      "registry": "https://registry.npmjs.org/"
+    }
   },
   "config": {
     "commitizen": {
