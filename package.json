@@ -48,7 +48,7 @@
   ],
   "dependencies": {
     "@loopback/core": "^4.0.7",
-    "casbin": "^5.15.1",
+    "casbin": "^5.20.4",
     "casbin-pg-adapter": "^1.4.0",
     "lodash": "^4.17.21"
   },
