@@ -1,3 +1,23 @@
+## Release [v5.1.2](https://github.com/sourcefuse/loopback4-authorization/compare/v5.1.1..v5.1.2) March 13, 2023
+Welcome to the March 13, 2023 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [loopback version update](https://github.com/sourcefuse/loopback4-authorization/issues/83) :- [chore(deps): loopback version update ](https://github.com/sourcefuse/loopback4-authorization/commit/820244541cc590d69588484083fb5e6c31074040) was commited on March 13, 2023 by [Gautam Agarwal](mailto:108651274+gautam23-sf@users.noreply.github.com)
+    
+      - loopback version update
+      
+      -  GH-83
+      
+  
+  - [Stale Bot missing in the repository](https://github.com/sourcefuse/loopback4-authorization/issues/81) :- [chore(chore): add github stale bot ](https://github.com/sourcefuse/loopback4-authorization/commit/b216e4f111256fdb1a003ac35a35eaffb80d9907) was commited on February 27, 2023 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+      - Added stale.yml file to configure stale options
+      
+      -  GH-81
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v5.1.1](https://github.com/sourcefuse/loopback4-authorization/compare/v5.1.0..v5.1.1) February 17, 2023
 Welcome to the February 17, 2023 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
