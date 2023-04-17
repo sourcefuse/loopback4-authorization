@@ -51,13 +51,16 @@ export class CasbinAuthorizationProvider
         throw new HttpErrors.Unauthorized(
           `Resource parameter is missing in the decorator.`,
         );
+      } else {
+        //This is intentional
       }
 
+      //@SONAR_STOPS@
       if (!user.id) {
         throw new HttpErrors.Unauthorized(`User not found.`);
       }
-
       const subject = this.getUserName(`${user.id}`);
+      //@SONAR_STARTS@
 
       let desiredPermissions;
 

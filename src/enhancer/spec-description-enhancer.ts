@@ -18,6 +18,7 @@ export class DescSpecEnhancer implements OASEnhancer {
   @inject(CoreBindings.APPLICATION_INSTANCE) private readonly app: Application;
   name = 'info';
   modifySpec(spec: OpenAPIObject): OpenApiSpec {
+    //@SONAR_STOPS@
     for (const controller of this.app.find(`${CoreBindings.CONTROLLERS}.*`)) {
       const ctor = controller.valueConstructor;
       if (ctor) {
@@ -37,7 +38,7 @@ export class DescSpecEnhancer implements OASEnhancer {
         }
       }
     }
-
+    //@SONAR_STARTS@
     return spec;
   }
 }

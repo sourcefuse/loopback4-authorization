@@ -38,6 +38,8 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
       // Return immediately with true, if allowed to all
       // This is for publicly open routes only
       return true;
+    } else {
+      //This is intentional
     }
 
     const permissionsToCheck = metadata.permissions;

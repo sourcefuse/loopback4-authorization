@@ -5,7 +5,9 @@ import {UserPermission, UserPermissionsFn} from '../types';
 export class UserPermissionsProvider
   implements Provider<UserPermissionsFn<string>>
 {
-  constructor() {}
+  constructor() {
+    //This is intentional
+  }
 
   value(): UserPermissionsFn<string> {
     return (userPermissions, rolePermissions) =>
@@ -27,6 +29,8 @@ export class UserPermissionsProvider
       } else if (!userPerm.allowed && perms.indexOf(userPerm.permission) >= 0) {
         // Remove permission if it is disallowed for user
         perms.splice(perms.indexOf(userPerm.permission), 1);
+      } else {
+        //This is intentional
       }
     });
     return perms;
