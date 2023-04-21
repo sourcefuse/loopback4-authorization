@@ -30,7 +30,7 @@ export class UserPermissionsProvider
         // Remove permission if it is disallowed for user
         perms.splice(perms.indexOf(userPerm.permission), 1);
       } else {
-        //This is intentional
+        //this is intentional
       }
     });
     return perms;

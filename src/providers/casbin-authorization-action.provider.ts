@@ -41,26 +41,27 @@ export class CasbinAuthorizationProvider
 
       if (request && this.checkIfAllowedAlways(request)) {
         return true;
-      } else if (!metadata) {
-        return false;
-      } else if (metadata.permissions?.indexOf('*') === 0) {
-        // Return immediately with true, if allowed to all
-        // This is for publicly open routes only
-        return true;
-      } else if (!metadata.resource) {
+      }
+
+      if (!metadata?.resource) {
+        if (!metadata) {
+          return false;
+        }
         throw new HttpErrors.Unauthorized(
           `Resource parameter is missing in the decorator.`,
         );
-      } else {
-        //This is intentional
       }
 
-      //@SONAR_STOPS@
+      if (metadata.permissions?.indexOf('*') === 0) {
+        // Return immediately with true, if allowed to all
+        // This is for publicly open routes only
+        return true;
+      }
+
       if (!user.id) {
         throw new HttpErrors.Unauthorized(`User not found.`);
       }
       const subject = this.getUserName(`${user.id}`);
-      //@SONAR_STARTS@
 
       let desiredPermissions;
 

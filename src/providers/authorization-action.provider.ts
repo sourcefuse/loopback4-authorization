@@ -27,19 +27,21 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
 
     if (request && this.checkIfAllowedAlways(request)) {
       return true;
-    } else if (!metadata) {
+    }
+
+    if (metadata) {
+      if (metadata.permissions.indexOf('*') === 0) {
+        // Return immediately with true, if allowed to all
+        // This is for publicly open routes only
+        return true;
+      }
+    } else {
       try {
         await this.requestContext.get(CoreBindings.CONTROLLER_METHOD_NAME);
         return false;
       } catch (error) {
         throw new HttpErrors.NotFound('API not found !');
       }
-    } else if (metadata.permissions.indexOf('*') === 0) {
-      // Return immediately with true, if allowed to all
-      // This is for publicly open routes only
-      return true;
-    } else {
-      //This is intentional
     }
 
     const permissionsToCheck = metadata.permissions;
