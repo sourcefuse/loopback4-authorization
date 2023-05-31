@@ -267,6 +267,30 @@ export const enum PermissionKey {
   DeleteAudit = 'DeleteAudit',
 }
 ```
+- Serving the static files:
+
+Authorization  configuration binding sets up paths that can be accessed without any authorization checks, allowing static files to be served directly  from the root URL of the application.The allowAlwaysPaths property is used to define these paths for the files in public directory  i.e for a test.html file in public directory ,one can provide its path as follows:
+
+```
+this.bind(AuthorizationBindings.CONFIG).to({
+  allowAlwaysPaths: ['/explorer','/test.html'],
+});
+```
+
+ To set up the public directory as a static,one can add the following in application.ts file.
+
+```
+this.static('/', path.join(__dirname, '../public'));
+
+```
+If ,in case the file is in some other folder then `app.static()` can be called  multiple times to configure the app to serve static assets from different directories.
+
+```
+this.static('/', path.join(__dirname, '../public'));
+this.static('/downloads', path.join(__dirname, '../downloads'));
+
+```
+For more details,refer [here](https://loopback.io/doc/en/lb4/Serving-static-files.html#:~:text=One%20of%20the%20basic%20requirements,the%20API%20are%20explained%20below.)
 
 # Extension enhancement using CASBIN authorisation
 
@@ -526,6 +550,7 @@ async create(@requestBody() role: Role): Promise<Role> {
   return await this.roleRepository.create(role);
 }
 ```
+
 
 ## Feedback
 
