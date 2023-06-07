@@ -1,3 +1,34 @@
+## Release [v6.0.0](https://github.com/sourcefuse/loopback4-authorization/compare/v5.1.3..v6.0.0) June 7, 2023
+Welcome to the June 7, 2023 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [Loopback version update](https://github.com/sourcefuse/loopback4-authorization/issues/87) :- [chore(deps): loopback version update ](https://github.com/sourcefuse/loopback4-authorization/commit/1dbb12cbb7fa2f86ec2f96dd0a36551b46581230) was commited on June 1, 2023 by [RaghavaroraSF](mailto:97958393+RaghavaroraSF@users.noreply.github.com)
+    
+      - Loopback version update
+      
+      -  GH-87
+      
+  
+  - [Remove support for node v14](https://github.com/sourcefuse/loopback4-authorization/issues/91) :- [feat(chore): remove support for node v14,v12,v10 ](https://github.com/sourcefuse/loopback4-authorization/commit/9e526e59935ebc0e3c6344dcd078840e017814fd) was commited on May 11, 2023 by [RaghavaroraSF](mailto:97958393+RaghavaroraSF@users.noreply.github.com)
+    
+      - Version 14, v12, v10 of Nodejs reached its end of life
+      
+      -  BREAKING CHANGE:
+      
+      - End of life of node v14, node v12 and node v10
+      
+      -  GH-91
+      
+  
+  - [License  and Copyright Headers’ Year Upgradation](https://github.com/sourcefuse/loopback4-authorization/issues/89) :- [chore(maintenance): update license and copyright headers ](https://github.com/sourcefuse/loopback4-authorization/commit/768f2868a08129e4f8615c7ef7c61bf0144a709f) was commited on May 4, 2023 by [RaghavaroraSF](mailto:97958393+RaghavaroraSF@users.noreply.github.com)
+    
+      - to reflect the year change
+      
+      -  GH-89
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v5.1.3](https://github.com/sourcefuse/loopback4-authorization/compare/v5.1.2..v5.1.3) April 24, 2023
 Welcome to the April 24, 2023 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
