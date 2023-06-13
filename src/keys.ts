@@ -8,6 +8,7 @@ import {
   CasbinAuthorizeFn,
   CasbinEnforcerConfigGetterFn,
   CasbinResourceModifierFn,
+  PermissionObject,
 } from './types';
 
 /**
@@ -16,6 +17,9 @@ import {
 export namespace AuthorizationBindings {
   export const AUTHORIZE_ACTION = BindingKey.create<AuthorizeFn>(
     'sf.userAuthorization.actions.authorize',
+  );
+  export const Permission = BindingKey.create<PermissionObject | null>(
+    `sf.userAuthorization.authorize.permissions`,
   );
 
   export const CASBIN_AUTHORIZE_ACTION = BindingKey.create<CasbinAuthorizeFn>(

@@ -22,7 +22,9 @@ export class AuthorizationComponent implements Component {
       [AuthorizationBindings.METADATA.key]: AuthorizationMetadataProvider,
       [AuthorizationBindings.USER_PERMISSIONS.key]: UserPermissionsProvider,
     };
-
+    this.bindings?.push(
+      Binding.bind(AuthorizationBindings.Permission).to(null),
+    );
     if (
       this.config?.allowAlwaysPaths &&
       this.config?.allowAlwaysPaths?.length > 0

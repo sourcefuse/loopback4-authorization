@@ -24,6 +24,11 @@ export interface CasbinAuthorizeFn {
     request: Request,
   ): Promise<boolean>;
 }
+export type PermissionObject = {
+  [controller: string]: {
+    [method: string]: string[];
+  };
+};
 /**
  * Authorization metadata interface for the method decorator
  */
