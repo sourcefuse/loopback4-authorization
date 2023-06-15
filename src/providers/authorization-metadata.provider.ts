@@ -36,17 +36,18 @@ export function getAuthorizeMetadata(
   methodName: string,
   userPermission?: PermissionObject,
 ): AuthorizationMetadata | undefined {
-  const value = MetadataInspector.getMethodMetadata<AuthorizationMetadata>(
-    AUTHORIZATION_METADATA_ACCESSOR,
-    controllerClass.prototype,
-    methodName,
-  ) ?? {permissions: []};
+  const authorizationMetadata =
+    MetadataInspector.getMethodMetadata<AuthorizationMetadata>(
+      AUTHORIZATION_METADATA_ACCESSOR,
+      controllerClass.prototype,
+      methodName,
+    ) ?? {permissions: []};
   if (userPermission) {
     const methodPermissions =
       userPermission?.[controllerClass.name]?.[methodName];
     if (methodPermissions) {
-      value.permissions = methodPermissions;
+      authorizationMetadata.permissions = methodPermissions;
     }
   }
-  return value;
+  return authorizationMetadata;
 }
