@@ -43,6 +43,12 @@ export class CasbinAuthorizationProvider
         return true;
       }
 
+      if (metadata?.permissions?.indexOf('*') === 0) {
+        // Return immediately with true, if allowed to all
+        // This is for publicly open routes only
+        return true;
+      }
+
       if (!metadata?.resource) {
         if (!metadata) {
           return false;
@@ -50,12 +56,6 @@ export class CasbinAuthorizationProvider
         throw new HttpErrors.Unauthorized(
           `Resource parameter is missing in the decorator.`,
         );
-      }
-
-      if (metadata.permissions?.indexOf('*') === 0) {
-        // Return immediately with true, if allowed to all
-        // This is for publicly open routes only
-        return true;
       }
 
       if (!user.id) {
