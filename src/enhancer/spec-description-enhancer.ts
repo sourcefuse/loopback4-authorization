@@ -20,24 +20,24 @@ export class DescSpecEnhancer implements OASEnhancer {
   modifySpec(spec: OpenAPIObject): OpenApiSpec {
     for (const controller of this.app.find(`${CoreBindings.CONTROLLERS}.*`)) {
       const ctor = controller.valueConstructor;
-      if (ctor) {
-        const endpoints = MetadataInspector.getAllMethodMetadata<RestEndpoint>(
-          'openapi-v3:methods',
-          ctor.prototype,
-        );
-        for (const route in endpoints) {
-          const routeData = endpoints[route];
-          if (
-            routeData?.spec?.description &&
-            !spec.paths[routeData.path][routeData.verb].description
-          ) {
-            spec.paths[routeData.path][routeData.verb].description =
-              routeData.spec.description;
-          }
+      if (!ctor) {
+        continue;
+      }
+      const endpoints = MetadataInspector.getAllMethodMetadata<RestEndpoint>(
+        'openapi-v3:methods',
+        ctor.prototype,
+      );
+      for (const route in endpoints) {
+        const routeData = endpoints[route];
+        if (
+          routeData?.spec?.description &&
+          !spec.paths[routeData.path][routeData.verb].description
+        ) {
+          spec.paths[routeData.path][routeData.verb].description =
+            routeData.spec.description;
         }
       }
     }
-
     return spec;
   }
 }

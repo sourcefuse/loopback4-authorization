@@ -6,7 +6,9 @@ import {HttpErrors} from '@loopback/rest';
 export class CasbinEnforcerProvider
   implements Provider<CasbinEnforcerConfigGetterFn>
 {
-  constructor() {}
+  constructor() {
+    //This is intentional
+  }
 
   value(): CasbinEnforcerConfigGetterFn {
     return async (
