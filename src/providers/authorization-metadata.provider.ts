@@ -17,7 +17,7 @@ export class AuthorizationMetadataProvider
     private readonly controllerClass: Constructor<{}>,
     @inject(CoreBindings.CONTROLLER_METHOD_NAME, {optional: true})
     private readonly methodName: string,
-    @inject(AuthorizationBindings.Permission)
+    @inject(AuthorizationBindings.PERMISSION)
     private permissionObject: PermissionObject,
   ) {}
 

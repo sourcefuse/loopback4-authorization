@@ -18,7 +18,7 @@ export namespace AuthorizationBindings {
   export const AUTHORIZE_ACTION = BindingKey.create<AuthorizeFn>(
     'sf.userAuthorization.actions.authorize',
   );
-  export const Permission = BindingKey.create<PermissionObject | null>(
+  export const PERMISSION = BindingKey.create<PermissionObject | null>(
     `sf.userAuthorization.authorize.permissions`,
   );
 

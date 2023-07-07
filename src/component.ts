@@ -14,7 +14,7 @@ export class AuthorizationComponent implements Component {
   constructor(
     @inject(AuthorizationBindings.CONFIG)
     private readonly config?: AuthorizationConfig,
-    @inject(AuthorizationBindings.Permission, {optional: true})
+    @inject(AuthorizationBindings.PERMISSION, {optional: true})
     private readonly permission?: unknown,
   ) {
     this.providers = {
@@ -26,7 +26,7 @@ export class AuthorizationComponent implements Component {
     };
     if (!this.permission) {
       this.bindings?.push(
-        Binding.bind(AuthorizationBindings.Permission).to(null),
+        Binding.bind(AuthorizationBindings.PERMISSION).to(null),
       );
     }
     if (
