@@ -267,7 +267,28 @@ export const enum PermissionKey {
   DeleteAudit = 'DeleteAudit',
 }
 ```
-- Serving the static files:
+- To Override the permissions provided in enum `permissionKey` file:
+
+  If the userPermission object is provided,it overrides the default permissions in the authorizationMetadata object.
+
+  For providing a userPermission object with custom permissions for specific controller methods, you can bind the following in `application.ts` file in your application.
+
+```ts
+
+this.bind(AuthorizationBindings.PERMISSION).to({
+   MessageController:{
+      create:['CreateMessage','ViewMessage'],
+      updateAll:['UpdateMessage','ViewMessage','ViewMessageNum]
+   }
+   AttachmentFileController:{
+      create:['CreateAttachmentFile','ViewAttachmentFile'],
+      updateAll:['UpdateAttachmentFile','ViewAttachmentFileNum']
+   }
+})
+
+```
+
+# Serving the static files:
 
 Authorization  configuration binding sets up paths that can be accessed without any authorization checks, allowing static files to be served directly  from the root URL of the application.The allowAlwaysPaths property is used to define these paths for the files in public directory  i.e for a test.html file in public directory ,one can provide its path as follows:
 
