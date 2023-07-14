@@ -1,16 +1,26 @@
-# loopback4-authorization
+<a href="https://sourcefuse.github.io/arc-docs/arc-api-docs" target="_blank"><img src="https://github.com/sourcefuse/loopback4-microservice-catalog/blob/master/docs/assets/logo-dark-bg.png?raw=true" alt="ARC By SourceFuse logo" title="ARC By SourceFuse" align="right" width="150" /></a>
 
-[![LoopBack](<https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
+# [loopback4-authorization](https://github.com/sourcefuse/loopback4-authorization)
 
-[![Node version](https://img.shields.io/node/v/loopback4-authorization.svg?style=flat-square)](https://nodejs.org/en/download/)
-[![Loopback Core Version](https://img.shields.io/npm/dependency-version/loopback4-authorization/@loopback/core.svg?color=dark%20green&style=flat-square)](https://github.com/strongloop/loopback-next)
-[![Loopback Build Version](https://img.shields.io/npm/dependency-version/loopback4-authorization/dev/@loopback/build.svg?color=dark%20green&style=flat-square)](https://github.com/strongloop/loopback-next/tree/master/packages/build)
-[![npm vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/loopback4-authorization.svg?style=flat-square)](https://www.npmjs.com/package/loopback4-authorization)
+<p align="left">
+<a href="https://www.npmjs.com/package/loopback4-authorization">
+<img src="https://img.shields.io/npm/v/loopback4-authorization.svg?style=flat-square" alt="npm version" />
+</a>
+<a href="https://github.com/sourcefuse/loopback4-authorization/graphs/contributors" target="_blank">
+<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/sourcefuse/loopback4-authorization">
+</a>
+<a href="https://www.npmjs.com/package/loopback4-authorization" target="_blank">
+<img alt="downloads" src="https://img.shields.io/npm/dw/loopback4-authorization.svg">
+</a>
+<a href="./LICENSE">
+<img src="https://img.shields.io/github/license/sourcefuse/loopback4-authorization.svg" alt="License" />
+</a>
+<a href="https://loopback.io/" target="_blank">
+<img alt="Powered By LoopBack 4" src="https://img.shields.io/badge/Powered%20by-LoopBack 4-brightgreen" />
+</a>
+</p>
 
-[![Latest version](https://img.shields.io/npm/v/loopback4-authorization.svg?style=flat-square)](https://www.npmjs.com/package/loopback4-authorization)
-[![License](https://img.shields.io/github/license/sourcefuse/loopback4-authorization.svg?color=blue&label=License&style=flat-square)](https://github.com/sourcefuse/loopback4-authorization/blob/master/LICENSE)
-[![Downloads](https://img.shields.io/npm/dw/loopback4-authorization.svg?label=Downloads&style=flat-square&color=blue)](https://www.npmjs.com/package/loopback4-authorization)
-[![Total Downloads](https://img.shields.io/npm/dt/loopback4-authorization.svg?label=Total%20Downloads&style=flat-square&color=blue)](https://www.npmjs.com/package/loopback4-authorization)
+## Overview
 
 A loopback-next extension for authorization in loopback applications. Its a very simplistic yet powerful and effective implementation using simple string based permissions.
 
@@ -267,6 +277,7 @@ export const enum PermissionKey {
   DeleteAudit = 'DeleteAudit',
 }
 ```
+
 - To Override the permissions provided in enum `permissionKey` file:
 
   If the userPermission object is provided,it overrides the default permissions in the authorizationMetadata object.
@@ -290,7 +301,7 @@ this.bind(AuthorizationBindings.PERMISSION).to({
 
 # Serving the static files:
 
-Authorization  configuration binding sets up paths that can be accessed without any authorization checks, allowing static files to be served directly  from the root URL of the application.The allowAlwaysPaths property is used to define these paths for the files in public directory  i.e for a test.html file in public directory ,one can provide its path as follows:
+Authorization configuration binding sets up paths that can be accessed without any authorization checks, allowing static files to be served directly from the root URL of the application.The allowAlwaysPaths property is used to define these paths for the files in public directory i.e for a test.html file in public directory ,one can provide its path as follows:
 
 ```
 this.bind(AuthorizationBindings.CONFIG).to({
@@ -298,19 +309,21 @@ this.bind(AuthorizationBindings.CONFIG).to({
 });
 ```
 
- To set up the public directory as a static,one can add the following in application.ts file.
+To set up the public directory as a static,one can add the following in application.ts file.
 
 ```
 this.static('/', path.join(__dirname, '../public'));
 
 ```
-If ,in case the file is in some other folder then `app.static()` can be called  multiple times to configure the app to serve static assets from different directories.
+
+If ,in case the file is in some other folder then `app.static()` can be called multiple times to configure the app to serve static assets from different directories.
 
 ```
 this.static('/', path.join(__dirname, '../public'));
 this.static('/downloads', path.join(__dirname, '../downloads'));
 
 ```
+
 For more details,refer [here](https://loopback.io/doc/en/lb4/Serving-static-files.html#:~:text=One%20of%20the%20basic%20requirements,the%20API%20are%20explained%20below.)
 
 # Extension enhancement using CASBIN authorisation
@@ -571,7 +584,6 @@ async create(@requestBody() role: Role): Promise<Role> {
   return await this.roleRepository.create(role);
 }
 ```
-
 
 ## Feedback
 
