@@ -1,3 +1,85 @@
+## Release [v6.1.0](https://github.com/sourcefuse/loopback4-authorization/compare/v6.0.0..v6.1.0) July 14, 2023
+Welcome to the July 14, 2023 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [Add ARC Branding in README](https://github.com/sourcefuse/loopback4-authorization/issues/99) :- [docs(chore): add arc branding ](https://github.com/sourcefuse/loopback4-authorization/commit/aa5b1dc8f48ba02a8a3a32ba1ce8fd3a923aa0ab) was commited on July 14, 2023 by [Surbhi](mailto:98279679+Surbhi-sharma1@users.noreply.github.com)
+    
+      - add arc branding
+      
+      -  GH-99
+      
+  
+  - [Loopback version update](https://github.com/sourcefuse/loopback4-authorization/issues/87) :- [chore(deps): loopback version updates ](https://github.com/sourcefuse/loopback4-authorization/commit/05d2fed8347491f4c5238b0a3d582da5d77d1e55) was commited on July 14, 2023 by [Surbhi](mailto:98279679+Surbhi-sharma1@users.noreply.github.com)
+    
+      - loopback version updates
+      
+      -  GH-87
+      
+  
+  - [loopback4-authorization:add ability to override permissions passed in metadata](https://github.com/sourcefuse/loopback4-authorization/issues/95) :- [feat(provider): add ability to override metadata permissions ](https://github.com/sourcefuse/loopback4-authorization/commit/7fd0f937960f7d8822b8d58efb0409fab054c731) was commited on July 10, 2023 by [Surbhi](mailto:98279679+Surbhi-sharma1@users.noreply.github.com)
+    
+      - * feat(provider): add ability to override metadata permissions
+      
+      -  add ability to override metadata permissions with the permission object passed
+      
+      - by the user.
+      
+      -  GH-95
+      
+      - * feat(provider): add ability to override user permissions
+      
+      -  add ability to provide user permissions
+      
+      -  GH-95
+      
+      - * docs(provider): add description to overrride the permissions in readme file
+      
+      -  add description to overrride the permissions in readme file
+      
+      -  GH-95
+      
+  
+  - [Throws not found for static files](https://github.com/sourcefuse/loopback4-authorization/issues/51) :- [docs(component): update readme for serving static files ](https://github.com/sourcefuse/loopback4-authorization/commit/b57177ec180a60c0c59aa0189cb4240751cadb0b) was commited on July 6, 2023 by [Surbhi](mailto:98279679+Surbhi-sharma1@users.noreply.github.com)
+    
+      - update readme for serving static files
+      
+      -  GH-51
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/) :- [fix(chore): fix sonar code smells ](https://github.com/sourcefuse/loopback4-authorization/commit/7c6fc277b7649131913a40c45985b87890093be3) was commited on July 6, 2023 by [RaghavaroraSF](mailto:97958393+RaghavaroraSF@users.noreply.github.com)
+    
+      - * fix(chore): fix sonar code smells
+      
+      -  resolving sonar code smells to improve quality gate
+      
+      -  GH-78
+      
+      - * fix(chore): fix sonar code smells
+      
+      -  Resolving sonar code smells to improve quality gate
+      
+      -  GH-78
+      
+      - * refactor(chore): fix sonar code smells
+      
+      -  and rebase
+      
+      -  GH-78
+      
+      - ---------
+      
+      -  Co-authored-by: Shubham P &lt;shubham.prajapat@sourcefuse.com&gt;
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/0) :- [refactor(maintenance): remove tracking dist folder on git ](https://github.com/sourcefuse/loopback4-authorization/commit/c4223d0e5fbdefdcacbc4c7fe6428a1c9f10d698) was commited on July 6, 2023 by [Shubham P](mailto:shubham.prajapat@sourcefuse.com)
+    
+      - it&#39;s not needed and it just contained build files from last year
+      
+      -  GH-0
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v6.0.0](https://github.com/sourcefuse/loopback4-authorization/compare/v5.1.3..v6.0.0) June 7, 2023
 Welcome to the June 7, 2023 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
