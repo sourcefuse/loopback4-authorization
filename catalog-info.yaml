@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: loopback4-authorization
+  annotations:
+    github.com/project-slug: sourcefuse/loopback4-authorization
+spec:
+  type: other
+  lifecycle: unknown
+  owner: sourcefuse
