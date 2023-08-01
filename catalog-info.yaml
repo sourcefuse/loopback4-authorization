@@ -4,7 +4,19 @@ metadata:
   name: loopback4-authorization
   annotations:
     github.com/project-slug: sourcefuse/loopback4-authorization
+  namespace: arc
+  description: A LoopBack 4 extension for managing API Authorization.
+  tags:
+    - authorization
+    - access-management
+    - loopback
+    - extension
+  links:
+    - url: https://npmjs.com/package/loopback4-authorization
+      title: NPM Package
+    - url: https://loopback.io/doc/en/lb4/Extending-LoopBack-4.html#overview
+      title: Extending LoopBack
 spec:
-  type: other
-  lifecycle: unknown
+  type: component
+  lifecycle: production
   owner: sourcefuse
