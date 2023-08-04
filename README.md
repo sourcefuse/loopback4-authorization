@@ -22,17 +22,7 @@
 
 ## Overview
 
-A loopback-next extension for authorization in loopback applications. Its a very simplistic yet powerful and effective implementation using simple string based permissions.
-
-It provides three ways of integration
-
-1. **User level permissions only** - Permissions are associated directly to user. In this case, each user entry in DB contains specific array of permission keys.
-2. **Role based permissions** - Permissions are associated to roles and users have a specific role attached. This actually reduces redundancy in DB a lot, as most of the time, users will have many common permissions. If that is not the case for you, then, use method #1 above.
-3. **Role based permissions with user level override** - This is the most flexible architecture. In this case, method #2 is implemented as is. On top of it, we also add user-level permissions override, allow/deny permissions over role permissions. So, say there is user who can perform all admin role actions except he cannot remove users from the system. So, DeleteUser permission can be denied at user level and role can be set as Admin for the user.
-
-[Extension enhancement using CASBIN authorisation](#Extension-enhancement-using-CASBIN-authorisation)
-
-Refer to the usage section below for details on integration
+A LoopBack 4 extension for Authorization Capabilities. It's very simple to integration yet powerful and effective.
 
 ## Install
 
@@ -46,9 +36,35 @@ For a quick starter guide, you can refer to our [loopback 4 starter](https://git
 
 ## Usage
 
+### Ways of Integration:
+
+On a higher level, it provides three ways of integration:
+
+#### 1. User Level Permissions Only
+
+Where permissions are associated directly to user. In this case, each user entry in DB contains specific array of permission keys.
+
+#### 2. Role Based Permissions
+
+Where permissions are associated to roles and users have a specific role attached. This actually reduces redundancy in DB a lot, as most of the time, users will have many common permissions. If that is not the case for you, then, use the first method.
+
+#### 3. Role Based Permissions with User Level Flexibility
+
+This is the most flexible architecture. In this case, method #2 is implemented as is. 
+
+On top of it, we also add user-level permissions override, allow/deny permissions over role permissions. So, say there is user who can perform all admin role actions except he cannot remove users from the system. So, DeleteUser permission can be denied at user level and role can be set as Admin for the user.
+
+[Extension enhancement using CASBIN authorisation](#Extension-enhancement-using-CASBIN-authorisation)
+
+Refer to the usage section below for details on integration.
+
 In order to use this component into your LoopBack application, please follow below steps.
 
-- Add component to application.
+### Steps
+
+#### Bind Component
+
+Add `AuthorizationComponent` to your application, Like below:
 
 ```ts
 this.bind(AuthorizationBindings.CONFIG).to({
@@ -57,7 +73,9 @@ this.bind(AuthorizationBindings.CONFIG).to({
 this.component(AuthorizationComponent);
 ```
 
-- If using method #1 from above, implement Permissions interface in User model and add permissions array.
+#### Implement Permission Interface
+
+If using method #1 from above, implement Permissions interface in User model and add permissions array.
 
 ```ts
 @model({
@@ -80,7 +98,7 @@ export class User extends Entity implements Permissions<string> {
 }
 ```
 
-- If using method #2 or #3 from above, implement Permissions interface in Role model and add permissions array.
+If using method #2 or #3 from above, implement Permissions interface in Role model and add permissions array.
 
 ```ts
 @model({
@@ -103,7 +121,9 @@ export class Role extends Entity implements Permissions<string> {
 }
 ```
 
-- If using method #3 from above, implement UserPermissionsOverride interface in User model and add user level permissions array as below.
+#### Implement `UserPermissionsOverride` Interface
+
+If using method #3 from above, implement UserPermissionsOverride interface in User model and add user level permissions array as below.
   Do this if there is a use-case of explicit allow/deny of permissions at user-level in the application.
   You can skip otherwise.
 
@@ -128,7 +148,11 @@ export class User extends Entity implements UserPermissionsOverride<string> {
 }
 ```
 
-- For method #3, we also provide a simple provider function [_AuthorizationBindings.USER_PERMISSIONS_](<[./src/providers/user-permissions.provider.ts](https://github.com/sourcefuse/loopback4-authorization/blob/master/src/providers/user-permissions.provider.ts)>) to evaluate the user permissions based on its role permissions and user-level overrides. Just inject it
+#### User Permissions Provider
+
+For method #3, This extension exposes a provider function [AuthorizationBindings.USER_PERMISSIONS](https://github.com/sourcefuse/loopback4-authorization/blob/master/src/providers/user-permissions.provider.ts) to evaluate the user permissions based on its role permissions and user-level overrides. 
+
+Just inject it like below:
 
 ```ts
 @inject(AuthorizationBindings.USER_PERMISSIONS)
@@ -141,8 +165,7 @@ and invoke it
 const permissions = this.getUserPermissions(user.permissions, role.permissions);
 ```
 
-- Add a step in custom sequence to check for authorization whenever any end
-  point is hit.
+Add a step in custom sequence to check for authorization whenever any endpoint is hit.
 
 ```ts
 import {inject} from '@loopback/context';
@@ -223,8 +246,7 @@ export class MySequence implements SequenceHandler {
 
 The above sequence also contains user authentication using [loopback4-authentication](https://github.com/sourcefuse/loopback4-authentication) package. You can refer to the documentation for the same for more details.
 
-- Now we can add access permission keys to the controller methods using authorize
-  decorator as below.
+Now we can add access permission keys to the controller methods using authorize decorator as below:
 
 ```ts
 @authorize(['CreateRole'])
@@ -244,7 +266,7 @@ async create(@requestBody() role: Role): Promise<Role> {
 ```
 
 This endpoint will only be accessible if logged in user has permission
-'CreateRole'.
+`CreateRole`.
 
 A good practice is to keep all permission strings in a separate enum file like this.
 
@@ -278,28 +300,31 @@ export const enum PermissionKey {
 }
 ```
 
-- To Override the permissions provided in enum `permissionKey` file:
+### Overriding Permissions
 
-  If the userPermission object is provided,it overrides the default permissions in the authorizationMetadata object.
+API endpoints provided by ARC API (aka Sourceloop) services have their permissions pre-defined in them bundled.
 
-  For providing a userPermission object with custom permissions for specific controller methods, you can bind the following in `application.ts` file in your application.
+In order to override them you can bind your custom permissions in the `AuthorizationBindings.PERMISSION` binding key.
+This accepts an object that should have Controller class name as the root level key and the value of which is another object of method to permissions array mapping.
+
+Like below: 
 
 ```ts
-
 this.bind(AuthorizationBindings.PERMISSION).to({
-   MessageController:{
-      create:['CreateMessage','ViewMessage'],
-      updateAll:['UpdateMessage','ViewMessage','ViewMessageNum]
+   MessageController: {
+      create: ['CreateMessage', 'ViewMessage'],
+      updateAll: ['UpdateMessage', 'ViewMessage', 'ViewMessageNum']
    }
-   AttachmentFileController:{
-      create:['CreateAttachmentFile','ViewAttachmentFile'],
-      updateAll:['UpdateAttachmentFile','ViewAttachmentFileNum']
+   AttachmentFileController: {
+      create: ['CreateAttachmentFile', 'ViewAttachmentFile'],
+      updateAll: ['UpdateAttachmentFile', 'ViewAttachmentFileNum']
    }
-})
-
+});
 ```
 
-# Serving the static files:
+You can easily check the name of the controller and it's method name from the source code of the services or from the Swagger UI (clicking the endpoint in swagger append the controller and method name in the URL like `LoginController.login` where `login` is the method name). 
+
+## Serving the static files:
 
 Authorization configuration binding sets up paths that can be accessed without any authorization checks, allowing static files to be served directly from the root URL of the application.The allowAlwaysPaths property is used to define these paths for the files in public directory i.e for a test.html file in public directory ,one can provide its path as follows:
 
@@ -316,7 +341,7 @@ this.static('/', path.join(__dirname, '../public'));
 
 ```
 
-If ,in case the file is in some other folder then `app.static()` can be called multiple times to configure the app to serve static assets from different directories.
+If, in case the file is in some other folder then `app.static()` can be called multiple times to configure the app to serve static assets from different directories.
 
 ```
 this.static('/', path.join(__dirname, '../public'));
@@ -326,14 +351,14 @@ this.static('/downloads', path.join(__dirname, '../downloads'));
 
 For more details,refer [here](https://loopback.io/doc/en/lb4/Serving-static-files.html#:~:text=One%20of%20the%20basic%20requirements,the%20API%20are%20explained%20below.)
 
-# Extension enhancement using CASBIN authorisation
+## Extension enhancement using CASBIN authorisation
 
 As a further enhancement to these methods, we are using [casbin library](https://casbin.org/docs/en/overview) to define permissions at level of entity or resource associated with an API call. Casbin authorisation implementation can be performed in two ways:
 
 1. **Using default casbin policy document** - Define policy document in default casbin format in the app, and configure authorise decorator to use those policies.
 2. **Defining custom logic to form dynamic policies** - Implement dynamic permissions based on app logic in casbin-enforcer-config provider. Authorisation extension will dynamically create casbin policy using this business logic to give the authorisation decisions.
 
-## Usage
+### Casbin Usage
 
 In order to use this enhacement into your LoopBack application, please follow below steps.
 
