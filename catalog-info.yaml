@@ -4,6 +4,7 @@ metadata:
   name: loopback4-authorization
   annotations:
     github.com/project-slug: sourcefuse/loopback4-authorization
+    backstage.io/techdocs-ref: dir:.
   namespace: arc
   description: A LoopBack 4 extension for managing API Authorization.
   tags:

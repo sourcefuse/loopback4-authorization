@@ -1,0 +1,5 @@
+site_name: loopback4-authorization
+site_description: loopback4-authorization
+
+plugins:
+  - techdocs-core
