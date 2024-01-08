@@ -2,7 +2,6 @@ import {Getter, inject, Provider} from '@loopback/core';
 import {Request} from '@loopback/express';
 import {HttpErrors} from '@loopback/rest';
 import * as casbin from 'casbin';
-
 import {AuthorizationBindings} from '../keys';
 import {
   AuthorizationMetadata,
@@ -63,15 +62,7 @@ export class CasbinAuthorizationProvider
       }
       const subject = this.getUserName(`${user.id}`);
 
-      let desiredPermissions;
-
-      if (metadata.permissions && metadata.permissions.length > 0) {
-        desiredPermissions = metadata.permissions;
-      } else {
-        throw new HttpErrors.Unauthorized(
-          `Permissions are missing in the decorator.`,
-        );
-      }
+      const desiredPermissions = this.getDesiredPermissions(metadata);
 
       // Fetch casbin config by invoking casbin-config-getter-provider
       const casbinConfig = await this.getCasbinEnforcerConfig(
@@ -90,7 +81,7 @@ export class CasbinAuthorizationProvider
         );
       }
       // In case casbin policy is coming via provider, use that to initialise enforcer
-      else if (!metadata.isCasbinPolicy && casbinConfig.allowedRes) {
+      else if (casbinConfig.allowedRes) {
         const policy = this.createCasbinPolicy(
           casbinConfig.allowedRes,
           subject,
@@ -122,6 +113,16 @@ export class CasbinAuthorizationProvider
   // A user's name would be `u${ id }`
   getUserName(id: string): string {
     return `u${id}`;
+  }
+
+  getDesiredPermissions(metadata: AuthorizationMetadata): Array<string> {
+    if (metadata.permissions && metadata.permissions.length > 0) {
+      return metadata.permissions;
+    } else {
+      throw new HttpErrors.Unauthorized(
+        `Permissions are missing in the decorator.`,
+      );
+    }
   }
 
   // Create casbin policy for user based on ResourcePermission data provided by extension client
