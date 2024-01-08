@@ -5,10 +5,6 @@ import {UserPermission, UserPermissionsFn} from '../types';
 export class UserPermissionsProvider
   implements Provider<UserPermissionsFn<string>>
 {
-  constructor() {
-    //This is intentional
-  }
-
   value(): UserPermissionsFn<string> {
     return (userPermissions, rolePermissions) =>
       this.action(userPermissions, rolePermissions);

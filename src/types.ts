@@ -3,27 +3,29 @@ import {FileAdapter, Model} from 'casbin';
 import PostgresAdapter from 'casbin-pg-adapter';
 
 /**
- * Authorize action method interface
+ * Authorize action method type
+ *
+ * @param userPermissions - Array of permission keys granted to the user
+ * This is actually a union of permissions picked up based on role
+ * attached to the user and allowed permissions at specific user level
  */
-export interface AuthorizeFn {
-  // userPermissions - Array of permission keys granted to the user
-  // This is actually a union of permissions picked up based on role
-  // attached to the user and allowed permissions at specific user level
-  (userPermissions: string[], request?: Request): Promise<boolean>;
-}
+export type AuthorizeFn = (
+  userPermissions: string[],
+  request?: Request,
+) => Promise<boolean>;
 
 /**
- * Casbin authorize action method interface
+ * Casbin authorize action method type
+ * @param user - User object corresponding to the logged in user
+ * @param resVal - value of the resource for which authorisation is being sought
+ *
  */
-export interface CasbinAuthorizeFn {
-  // user - User object corresponding to the logged in user
-  // resVal - value of the resource for which authorisation is being sought
-  (
-    user: IAuthUserWithPermissions,
-    resVal: string,
-    request: Request,
-  ): Promise<boolean>;
-}
+export type CasbinAuthorizeFn = (
+  user: IAuthUserWithPermissions,
+  resVal: string,
+  request: Request,
+) => Promise<boolean>;
+
 export type PermissionObject = {
   [controller: string]: {
     [method: string]: string[];
@@ -82,40 +84,40 @@ export interface UserPermission<T> {
 }
 
 /**
- * User permissions manipulation method interface.
+ * User permissions manipulation method type.
  *
  * This is where we can add our business logic to read and
  * union permissions associated to user via role with
  * those associated directly to the user.
  *
  */
-export interface UserPermissionsFn<T> {
-  (userPermissions: UserPermission<T>[], rolePermissions: T[]): T[];
-}
+export type UserPermissionsFn<T> = (
+  userPermissions: UserPermission<T>[],
+  rolePermissions: T[],
+) => T[];
 
 /**
- * Casbin enforcer getter method interface
+ * Casbin enforcer getter method type
  *
  * This method provides the Casbin config
  * required to initialise a Casbin enforcer
  */
-export interface CasbinEnforcerConfigGetterFn {
-  (
-    authUser: IAuthUserWithPermissions,
-    resource: string,
-    isCasbinPolicy?: boolean,
-  ): Promise<CasbinConfig>;
-}
+export type CasbinEnforcerConfigGetterFn = (
+  authUser: IAuthUserWithPermissions,
+  resource: string,
+  isCasbinPolicy?: boolean,
+) => Promise<CasbinConfig>;
 
 /**
- * Casbin resource value modifier method interface
+ * Casbin resource value modifier method type
  *
  * This method can help modify the resource value
  * for integration with casbin, as per business logic
  */
-export interface CasbinResourceModifierFn {
-  (pathParams: string[], req: Request): Promise<string>;
-}
+export type CasbinResourceModifierFn = (
+  pathParams: string[],
+  req: Request,
+) => Promise<string>;
 
 /**
  * Casbin config object
