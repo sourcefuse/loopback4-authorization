@@ -1,5 +1,6 @@
 import {Request} from '@loopback/express';
 import {FileAdapter, Model} from 'casbin';
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import PostgresAdapter from 'casbin-pg-adapter';
 
 /**
