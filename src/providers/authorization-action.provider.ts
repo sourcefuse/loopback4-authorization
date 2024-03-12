@@ -32,7 +32,7 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
     if (metadata) {
       if (metadata.permissions.indexOf('*') === 0) {
         // Return immediately with true, if allowed to all
-        // This is for publicly open routes only
+        // This is for publicly open routes only.
         return true;
       }
     } else {
