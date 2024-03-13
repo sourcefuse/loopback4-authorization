@@ -47,7 +47,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/core": "^5.1.5",
+    "@loopback/core": "^6.0.0",
     "casbin": "^5.28.0",
     "casbin-pg-adapter": "^1.4.0",
     "lodash": "^4.17.21"
@@ -55,12 +55,12 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@loopback/boot": "^6.1.5",
-    "@loopback/build": "^10.1.5",
-    "@loopback/context": "^6.1.5",
-    "@loopback/eslint-config": "^14.0.5",
-    "@loopback/rest": "^13.1.5",
-    "@loopback/testlab": "^6.1.5",
+    "@loopback/boot": "^7.0.0",
+    "@loopback/build": "^11.0.0",
+    "@loopback/context": "^7.0.0",
+    "@loopback/eslint-config": "^15.0.0",
+    "@loopback/rest": "^14.0.0",
+    "@loopback/testlab": "^7.0.0",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.1",
@@ -72,8 +72,8 @@
     "cz-conventional-changelog": "^3.3.0",
     "cz-customizable": "^6.3.0",
     "cz-customizable-ghooks": "^2.0.0",
-    "eslint": "^8.51.0",
-    "fs-extra": "^11.1.1",
+    "eslint": "^8.57.0",
+    "fs-extra": "^11.2.0",
     "git-release-notes": "^5.0.0",
     "husky": "^7.0.4",
     "jsdom": "^21.0.0",
