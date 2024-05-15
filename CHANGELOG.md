@@ -1,3 +1,33 @@
+## Release [v7.0.1](https://github.com/sourcefuse/loopback4-authorization/compare/v7.0.0..v7.0.1) May 15, 2024
+Welcome to the May 15, 2024 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [Changelog not generated](https://github.com/sourcefuse/loopback4-authorization/issues/128) :- [fix(ci-cd): step to generate changelog ](https://github.com/sourcefuse/loopback4-authorization/commit/341f8154ed9fdb306cba02e8f392c91963012cd6) was commited on May 15, 2024 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+      - add the missing ci checks on pr
+      
+      -  GH-128
+      
+  
+  - [Copy the Readme to root as well](https://github.com/sourcefuse/loopback4-authorization/issues/126) :- [docs(chore): copy the Readme to root as well ](https://github.com/sourcefuse/loopback4-authorization/commit/0fc85a206dfb4a3e6a9c48148165a60d90f31fe5) was commited on May 13, 2024 by [arpit1503khanna](mailto:108673359+arpit1503khanna@users.noreply.github.com)
+    
+      - copy the Readme to root as well
+      
+      -  GH-126
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/) :- [](https://github.com/sourcefuse/loopback4-authorization/commit/964d5c67422b68ed1f98054cab1f1b2b0ee63265) was commited on March 13, 2024 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+  
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/00) :- [chore(ci-cd): update the readme path in sync docs workflow ](https://github.com/sourcefuse/loopback4-authorization/commit/d1008920f8cd1cb3ad58964ee00536d57f09b55a) was commited on March 13, 2024 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+      - readme moved to docs folder
+      
+      -  GH-00
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v6.1.0](https://github.com/sourcefuse/loopback4-authorization/compare/v6.0.0..v6.1.0) July 14, 2023
 Welcome to the July 14, 2023 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
