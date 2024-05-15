@@ -1,7 +1,7 @@
 {
   "name": "loopback4-authorization",
   "version": "7.0.0",
-  "description": "An authorization extension for loopback-next applications.",
+  "description": "ARC authorization extension for loopback-next applications.",
   "keywords": [
     "loopback-extension",
     "loopback",
