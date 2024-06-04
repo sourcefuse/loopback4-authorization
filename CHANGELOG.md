@@ -1,3 +1,16 @@
+## Release [v7.0.2](https://github.com/sourcefuse/loopback4-authorization/compare/v7.0.1..v7.0.2) June 4, 2024
+Welcome to the June 4, 2024 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [loopback version updates](https://github.com/sourcefuse/loopback4-authorization/issues/130) :- [chore(deps): loopback version updates ](https://github.com/sourcefuse/loopback4-authorization/commit/741835854eaeb59849d86a79213dd9373135c686) was commited on June 4, 2024 by [Surbhi](mailto:98279679+Surbhi-sharma1@users.noreply.github.com)
+    
+      - loopback version updates
+      
+      -  GH-130
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v7.0.1](https://github.com/sourcefuse/loopback4-authorization/compare/v7.0.0..v7.0.1) May 15, 2024
 Welcome to the May 15, 2024 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
