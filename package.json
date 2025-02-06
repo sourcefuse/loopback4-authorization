@@ -47,7 +47,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/core": "^6.1.6",
+    "@loopback/core": "^6.1.7",
     "casbin": "^5.32.0",
     "casbin-pg-adapter": "^1.4.0",
     "lodash": "^4.17.21"
