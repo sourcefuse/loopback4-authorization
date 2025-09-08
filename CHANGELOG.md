@@ -1,3 +1,20 @@
+## Release [v8.0.0](https://github.com/sourcefuse/loopback4-authorization/compare/v7.0.3..v8.0.0) September 8, 2025
+Welcome to the September 8, 2025 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/) :- [refactor(chore): node and loopback packages version upgrade ](https://github.com/sourcefuse/loopback4-authorization/commit/151bdc9a29ec71d96852c91d523fe9936035b8a4) was commited on September 8, 2025 by [Vaibhav Bhalla](mailto:vaibhav.bhalla@sourcefuse.com)
+    
+      - node and loopback packages version upgrade
+      
+      - BREAKING CHANGE: yes
+      
+      - GH-149
+      
+      - Co-authored-by: Vaibhav  Bhalla &lt;vaibhav.bhalla@SFSupports-MacBook-Air.local&gt;
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v7.0.3](https://github.com/sourcefuse/loopback4-authorization/compare/v7.0.2..v7.0.3) December 18, 2024
 Welcome to the December 18, 2024 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
