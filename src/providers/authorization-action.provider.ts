@@ -40,6 +40,9 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
         await this.requestContext.get(CoreBindings.CONTROLLER_METHOD_NAME);
         return false;
       } catch (error) {
+        // sonarignore:start
+        console.log('API not found', error);
+        // sonarignore:end
         throw new HttpErrors.NotFound('API not found !');
       }
     }
