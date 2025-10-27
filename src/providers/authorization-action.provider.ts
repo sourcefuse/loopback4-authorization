@@ -7,9 +7,12 @@ import {intersection} from 'lodash';
 import {Request} from 'express';
 import {HttpErrors, RestBindings} from '@loopback/rest';
 import {CoreBindings, Context} from '@loopback/core';
+import {ILogger, LOGGER} from '@sourceloop/core';
 
 export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
   constructor(
+    @inject(LOGGER.LOGGER_INJECT)
+    public logger: ILogger,
     @inject.getter(AuthorizationBindings.METADATA)
     private readonly getMetadata: Getter<AuthorizationMetadata>,
     @inject(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS)
@@ -40,6 +43,7 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
         await this.requestContext.get(CoreBindings.CONTROLLER_METHOD_NAME);
         return false;
       } catch (error) {
+        this.logger.error(error.message);
         throw new HttpErrors.NotFound('API not found !');
       }
     }
