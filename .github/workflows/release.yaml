@@ -2,12 +2,17 @@
 
 name: Release [Manual]
 on: workflow_dispatch
+
 permissions:
   contents: write
-  id-token: write
+  id-token: write   # REQUIRED for trusted publishing
+
 jobs:
   Release:
     runs-on: ubuntu-latest
+    # Specify environment if you configured one in npm
+    # environment: production  # Uncomment if you set an environment name in npm trusted publisher settings
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -15,42 +20,39 @@ jobs:
           # otherwise lerna can't detect the changes and will end up bumping the versions for all packages
           fetch-depth: 0
           token: ${{ secrets.RELEASE_COMMIT_GH_PAT }}
+
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4  # UPDATED to v4
         with:
           node-version: '22'
-          registry-url: "https://registry.npmjs.org/"
-          provenance: true  # enables trusted publish via OIDC
+          registry-url: 'https://registry.npmjs.org'
+          always-auth: false  # important for trusted publishing
+
       - name: Configure CI Git User
         run: |
           git config --global user.name $CONFIG_USERNAME
           git config --global user.email $CONFIG_EMAIL
-          git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/sourcefuse/arc-saas
+          git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/sourcefuse/loopback4-authorization
         env:
           GITHUB_PAT: ${{ secrets.RELEASE_COMMIT_GH_PAT }}
           CONFIG_USERNAME: ${{ vars.RELEASE_COMMIT_USERNAME }}
           CONFIG_EMAIL: ${{ vars.RELEASE_COMMIT_EMAIL }}
 
-      - name: Bootstrap
-        run: npm ci
-      # this step is added only since this version of nx dependency is not being installed on linux systems
-      # can be removed once this issue is fixed or we update to later versions
-      - name: nx dependency
-        run: npm i @nx/nx-linux-x64-gnu@16.10.0
-      - name: Test
-        run: npm run test --workspaces --if-present
-      - name: Lint
-        run: npm run lint --workspaces --if-present
-      - name: Stash Changes
-        run: git stash
-      - name: Bump Versions
-        # "HUSKY=0" disables pre-commit-msg check (Needed in order to allow lerna perform the release commit)
-        # run: HUSKY=0 npx lerna version --yes --ci --conventional-commits
-        # Bumping major version for release will remove once released
-        run: HUSKY=0 npx lerna version --yes --ci --conventional-commits 
-      # 🟢 This replaces 'lerna publish from-package --yes --provenance'
-      # and replicates its logic safely while keeping provenance and trusted publishing.
-      - name: Publish all changed packages
+      - name: Install 📌
+        run: npm install
+
+      - name: Test 🔧
+        run: npm run test
+
+      # ✅ CHANGED THIS SECTION
+      - name: Semantic Publish to NPM 🚀
         run: |
-          echo "🚀 Publishing packages from-package with provenance..."
-          npx lerna publish from-package --yes --registry https://registry.npmjs.org/
+          npm config set provenance true
+          HUSKY=0 npx semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_COMMIT_GH_PAT }}
+          # REMOVED: NPM_TOKEN is not needed with trusted publishing
+          # The id-token: write permission above handles authentication
+
+      - name: Changelog 📝
+        run: cd src/release_notes && HUSKY=0 node release-notes.js
