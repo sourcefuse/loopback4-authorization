@@ -1,3 +1,50 @@
+## Release [v8.1.0](https://github.com/sourcefuse/loopback4-authorization/compare/v8.0.0..v8.1.0) November 14, 2025
+Welcome to the November 14, 2025 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/155) :- [fix(provider): remove metadata check before authorization ](https://github.com/sourcefuse/loopback4-authorization/commit/c8aedb6881b5f53a632b89ae4a1b62fee19e322b) was commited on November 14, 2025 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+      - authorization should work even if no method metadata is present
+      
+      - GH-155
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/) :- [](https://github.com/sourcefuse/loopback4-authorization/commit/76e22ffbc09c7eecf83a7da1780e1512fbedc06c) was commited on October 28, 2025 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+      - Updated the release workflow to improve package publishing and testing steps.
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/) :- [](https://github.com/sourcefuse/loopback4-authorization/commit/8cace73c0d0b662a30ad56c9b2d6b56428dfc33d) was commited on October 28, 2025 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+      - Updated release workflow to improve package publishing and testing steps.
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/153) :- [chore(ci-cd): using trusted oidc publishing ](https://github.com/sourcefuse/loopback4-authorization/commit/d183f89055359402600d45ce3b7d3cce52a5dbf6) was commited on October 27, 2025 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+      - * chore(ci-cd): rebase
+      
+      - rebase
+      
+      - GH-153
+      
+      - * chore(ci-cd): rebase
+      
+      - rebase
+      
+      - GH-153
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/) :- [feat(ci-cd): add trivy scan instead of synk ](https://github.com/sourcefuse/loopback4-authorization/commit/cbdc1e3596934b4d2560c191961d2f9042b9ce08) was commited on October 27, 2025 by [Vaibhav Bhalla](mailto:vaibhav.bhalla@sourcefuse.com)
+    
+      - add trivy scan instead of synk and fix sonarqube issues
+      
+      - GH-151
+      
+      - Co-authored-by: Vaibhav  Bhalla &lt;vaibhav.bhalla@SFSupports-MacBook-Air.local&gt;
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v8.0.0](https://github.com/sourcefuse/loopback4-authorization/compare/v7.0.3..v8.0.0) September 8, 2025
 Welcome to the September 8, 2025 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
