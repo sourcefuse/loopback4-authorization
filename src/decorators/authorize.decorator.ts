@@ -40,8 +40,9 @@ export function authorize(metadata: AuthorizationMetadata) {
       meta.spec = specPreprocessor(target, propertyKey, metadata, meta.spec);
       Reflector.deleteMetadata(OAI3KEY_METHODS, target, propertyKey);
       Reflector.defineMetadata(OAI3KEY_METHODS, meta, target, propertyKey);
-      authorizedecorator(target, propertyKey, descriptor);
     }
+    // authorization should work even if no method metadata is present
+    authorizedecorator(target, propertyKey, descriptor);
   };
 
   return authorizationWithMetadata;
