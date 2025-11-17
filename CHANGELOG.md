@@ -1,3 +1,33 @@
+## Release [v8.1.2](https://github.com/sourcefuse/loopback4-authorization/compare/v8.1.1..v8.1.2) November 17, 2025
+Welcome to the November 17, 2025 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/00) :- [](https://github.com/sourcefuse/loopback4-authorization/commit/351678061e8f78eb8238aa64b2c9b4114b99e184) was commited on November 17, 2025 by [Yesha Mavani](mailto:yesha.mavani@sourcefuse.com)
+    
+      - dummy commit for version update
+      
+      - GH-00
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/158) :- [revert(provider): revert \&#34;feat(ci-cd): add trivy scan instead of syn… ](https://github.com/sourcefuse/loopback4-authorization/commit/35a2d87556ab353211d442ab4223266db091128d) was commited on November 17, 2025 by [Vaibhav Bhalla](mailto:vaibhav.bhalla@sourcefuse.com)
+    
+      - * revert(provider): revert \&#34;feat(ci-cd): add trivy scan instead of synk
+      
+      - (#152)\&#34;
+      
+      - This reverts commit cbdc1e3596934b4d2560c191961d2f9042b9ce08.
+      
+      - GH-158
+      
+      - * feat(ci-cd): add trivy scan
+      
+      - add trivy scan and fix sonar issues
+      
+      - GH-158
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v8.1.1](https://github.com/sourcefuse/loopback4-authorization/compare/v8.1.0..v8.1.1) November 17, 2025
 Welcome to the November 17, 2025 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
