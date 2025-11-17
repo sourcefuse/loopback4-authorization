@@ -9,6 +9,9 @@
 <a href="https://sonarcloud.io/summary/overall?id=sourcefuse_loopback4-authorization" target="_blank">
 <img alt="Sonar Quality Gate" src="https://img.shields.io/sonar/quality_gate/sourcefuse_loopback4-authorization?server=https%3A%2F%2Fsonarcloud.io">
 </a>
+<a href="https://app.snyk.io/org/ashishkaushik/reporting?context[page]=issues-detail&project_target=%255B%2522sourcefuse%252Floopback4-authorization%2522%255D&project_origin=%255B%2522github%2522%255D&issue_status=%255B%2522Open%2522%255D&issue_by=Severity&table_issues_detail_cols=SCORE%257CCVE%257CCWE%257CPROJECT%257CEXPLOIT%2520MATURITY%257CAUTO%2520FIXABLE%257CINTRODUCED%257CSNYK%2520PRODUCT&v=1">
+<img alt="Synk Status" src="https://img.shields.io/badge/SYNK_SECURITY-MONITORED-GREEN">
+</a>
 <a href="https://github.com/sourcefuse/loopback4-authorization/graphs/contributors" target="_blank">
 <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/sourcefuse/loopback4-authorization">
 </a>

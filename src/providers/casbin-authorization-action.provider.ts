@@ -33,11 +33,18 @@ export class CasbinAuthorizationProvider
     resource: string,
     request?: Request,
   ): Promise<boolean> {
+    let authDecision = false;
     try {
       // fetch decorator metadata
       const metadata: AuthorizationMetadata = await this.getCasbinMetadata();
 
-      if (this.isAlwaysAllowed(request, metadata)) {
+      if (request && this.checkIfAllowedAlways(request)) {
+        return true;
+      }
+
+      if (metadata?.permissions?.indexOf('*') === 0) {
+        // Return immediately with true, if allowed to all
+        // This is for publicly open routes only
         return true;
       }
 
@@ -89,15 +96,16 @@ export class CasbinAuthorizationProvider
         return false;
       }
 
-      return await this.checkPermissions(
-        enforcer,
-        subject,
-        resource,
-        desiredPermissions,
-      );
+      // Use casbin enforce method to get authorization decision
+      for (const permission of desiredPermissions) {
+        const decision = await enforcer.enforce(subject, resource, permission);
+        authDecision = authDecision || decision;
+      }
     } catch (err) {
       throw new HttpErrors.Unauthorized(err.message);
     }
+
+    return authDecision;
   }
 
   // Generate the user name according to the naming convention
@@ -115,33 +123,6 @@ export class CasbinAuthorizationProvider
         `Permissions are missing in the decorator.`,
       );
     }
-  }
-
-  isAlwaysAllowed(
-    request?: Request,
-    metadata?: AuthorizationMetadata,
-  ): boolean {
-    if (request && this.checkIfAllowedAlways(request)) {
-      return true;
-    }
-    if (metadata?.permissions?.indexOf('*') === 0) {
-      return true;
-    }
-    return false;
-  }
-
-  async checkPermissions(
-    enforcer: casbin.Enforcer,
-    subject: string,
-    resource: string,
-    permissions: string[],
-  ): Promise<boolean> {
-    for (const permission of permissions) {
-      if (await enforcer.enforce(subject, resource, permission)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   // Create casbin policy for user based on ResourcePermission data provided by extension client
