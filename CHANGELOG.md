@@ -1,3 +1,16 @@
+## Release [v8.1.1](https://github.com/sourcefuse/loopback4-authorization/compare/v8.1.0..v8.1.1) November 17, 2025
+Welcome to the November 17, 2025 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/155) :- [fix(provider): reverting gh 155 ](https://github.com/sourcefuse/loopback4-authorization/commit/9fa2b5eceb22fb5d26381abcf9fcafe721d85b7a) was commited on November 17, 2025 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+      - authorize decorator to be used inside method metadata
+      
+      - GH-155
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v8.1.0](https://github.com/sourcefuse/loopback4-authorization/compare/v8.0.0..v8.1.0) November 14, 2025
 Welcome to the November 14, 2025 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
