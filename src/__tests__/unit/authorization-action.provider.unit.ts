@@ -9,24 +9,15 @@ import {AuthorizeActionProvider} from '../../providers';
 import {AuthorizationMetadata} from '../../types';
 import {mockUser} from './data/mock-user';
 import {Context} from '@loopback/core';
-import {ILogger} from '@sourceloop/core';
 
 const mockPermissions: AuthorizationMetadata = {
   permissions: ['ViewTodo'],
 };
 
 describe('AuthorizeActionProvider', () => {
-  const mockLogger: ILogger = {
-    log: sinon.stub(),
-    error: sinon.stub(),
-    info: sinon.stub(),
-    warn: sinon.stub(),
-    debug: sinon.stub(),
-  };
   it('should return true if user has required permissions', async () => {
     const metadataGetterStub = sinon.stub().resolves(mockPermissions);
     const action = new AuthorizeActionProvider(
-      mockLogger,
       metadataGetterStub,
       [],
       getRequestContext(),
@@ -37,7 +28,6 @@ describe('AuthorizeActionProvider', () => {
   it('should return true for all users if resource has "*" as the first permissions', async () => {
     const metadataGetterStub = sinon.stub().resolves({permissions: ['*']});
     const action = new AuthorizeActionProvider(
-      mockLogger,
       metadataGetterStub,
       [],
       getRequestContext(),
@@ -48,7 +38,6 @@ describe('AuthorizeActionProvider', () => {
   it('should return false if user does not have required permissions', async () => {
     const metadataGetterStub = sinon.stub().resolves(mockPermissions);
     const action = new AuthorizeActionProvider(
-      mockLogger,
       metadataGetterStub,
       [],
       getRequestContext(),
@@ -59,7 +48,6 @@ describe('AuthorizeActionProvider', () => {
   it('should return true if requested resource is in always allowed list', async () => {
     const metadataGetterStub = sinon.stub().resolves(mockPermissions);
     const action = new AuthorizeActionProvider(
-      mockLogger,
       metadataGetterStub,
       ['/always/allowed'],
       getRequestContext(),
@@ -74,7 +62,6 @@ describe('AuthorizeActionProvider', () => {
   it('should return true if requested resource has a parent path in always allowed list', async () => {
     const metadataGetterStub = sinon.stub().resolves(mockPermissions);
     const action = new AuthorizeActionProvider(
-      mockLogger,
       metadataGetterStub,
       ['/always/allowed'],
       getRequestContext(),
@@ -89,7 +76,6 @@ describe('AuthorizeActionProvider', () => {
   it('should return false if requested resource is not in always allowed list, and user does not have required permissions', async () => {
     const metadataGetterStub = sinon.stub().resolves(mockPermissions);
     const action = new AuthorizeActionProvider(
-      mockLogger,
       metadataGetterStub,
       ['/not/always/allowed'],
       getRequestContext(),
@@ -107,7 +93,6 @@ describe('AuthorizeActionProvider', () => {
 
     const metadataGetterStub = sinon.stub().resolves();
     const action = new AuthorizeActionProvider(
-      mockLogger,
       metadataGetterStub,
       [],
       requestContext,
@@ -121,7 +106,6 @@ describe('AuthorizeActionProvider', () => {
     requestContext.get.throws();
     const metadataGetterStub = sinon.stub().resolves();
     const action = new AuthorizeActionProvider(
-      mockLogger,
       metadataGetterStub,
       [],
       requestContext,

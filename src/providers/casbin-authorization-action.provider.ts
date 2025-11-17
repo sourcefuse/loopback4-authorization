@@ -36,7 +36,6 @@ export class CasbinAuthorizationProvider
     try {
       // fetch decorator metadata
       const metadata: AuthorizationMetadata = await this.getCasbinMetadata();
-
       if (this.isAlwaysAllowed(request, metadata)) {
         return true;
       }
@@ -116,7 +115,6 @@ export class CasbinAuthorizationProvider
       );
     }
   }
-
   isAlwaysAllowed(
     request?: Request,
     metadata?: AuthorizationMetadata,
