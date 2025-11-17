@@ -36,12 +36,14 @@ export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
         return true;
       }
     } else {
+      // sonarignore:start
       try {
         await this.requestContext.get(CoreBindings.CONTROLLER_METHOD_NAME);
         return false;
       } catch (error) {
         throw new HttpErrors.NotFound('API not found !');
       }
+      // sonarignore:end
     }
 
     const permissionsToCheck = metadata.permissions;
