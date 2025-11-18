@@ -1,3 +1,16 @@
+## Release [v8.1.3](https://github.com/sourcefuse/loopback4-authorization/compare/v8.1.2..v8.1.3) November 18, 2025
+Welcome to the November 18, 2025 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/155) :- [fix(provider): remove metadata check before authorization ](https://github.com/sourcefuse/loopback4-authorization/commit/dde68f0d321426d11947ab73354713925640f01a) was commited on November 18, 2025 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+      - authorization should work even if no method metadata is present
+      
+      - GH-155
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v8.1.2](https://github.com/sourcefuse/loopback4-authorization/compare/v8.1.1..v8.1.2) November 17, 2025
 Welcome to the November 17, 2025 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
