@@ -2,9 +2,9 @@ import {Provider} from '@loopback/context';
 
 import {UserPermission, UserPermissionsFn} from '../types';
 
-export class UserPermissionsProvider
-  implements Provider<UserPermissionsFn<string>>
-{
+export class UserPermissionsProvider implements Provider<
+  UserPermissionsFn<string>
+> {
   value(): UserPermissionsFn<string> {
     return (userPermissions, rolePermissions) =>
       this.action(userPermissions, rolePermissions);
