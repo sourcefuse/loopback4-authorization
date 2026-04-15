@@ -47,7 +47,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/core": "^7.0.10",
+    "@loopback/core": "^7.0.11",
     "casbin": "^5.49.0",
     "casbin-pg-adapter": "^1.4.0",
     "lodash": "^4.18.1"
@@ -55,18 +55,18 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@loopback/boot": "^8.0.11",
-    "@loopback/build": "^12.0.10",
-    "@loopback/context": "^8.0.10",
+    "@loopback/boot": "^8.0.12",
+    "@loopback/build": "^12.0.11",
+    "@loopback/context": "^8.0.11",
     "@loopback/eslint-config": "^16.0.1",
-    "@loopback/rest": "^15.0.11",
-    "@loopback/testlab": "^8.0.10",
+    "@loopback/rest": "^15.0.12",
+    "@loopback/testlab": "^8.0.11",
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^12.0.6",
     "@semantic-release/npm": "^13.1.5",
-    "@semantic-release/release-notes-generator": "^10.0.3",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/lodash": "^4.17.24",
     "@types/node": "^18.11.9",
     "commitizen": "^4.3.1",
@@ -77,7 +77,7 @@
     "fs-extra": "^11.3.4",
     "git-release-notes": "^5.0.0",
     "husky": "^7.0.4",
-    "jsdom": "^21.0.0",
+    "jsdom": "^21.1.2",
     "semantic-release": "^25.0.3",
     "simple-git": "^3.33.0",
     "typescript": "~5.5.4"
