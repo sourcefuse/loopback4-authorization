@@ -9,9 +9,9 @@ import {CoreBindings} from '@loopback/core';
 import {AUTHORIZATION_METADATA_ACCESSOR, AuthorizationBindings} from '../keys';
 import {AuthorizationMetadata, PermissionObject} from '../types';
 
-export class AuthorizationMetadataProvider
-  implements Provider<AuthorizationMetadata | undefined>
-{
+export class AuthorizationMetadataProvider implements Provider<
+  AuthorizationMetadata | undefined
+> {
   constructor(
     @inject(CoreBindings.CONTROLLER_CLASS, {optional: true})
     private readonly controllerClass: Constructor<{}>,

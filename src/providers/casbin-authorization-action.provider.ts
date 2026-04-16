@@ -11,9 +11,7 @@ import {
   ResourcePermissionObject,
 } from '../types';
 
-export class CasbinAuthorizationProvider
-  implements Provider<CasbinAuthorizeFn>
-{
+export class CasbinAuthorizationProvider implements Provider<CasbinAuthorizeFn> {
   constructor(
     @inject.getter(AuthorizationBindings.METADATA)
     private readonly getCasbinMetadata: Getter<AuthorizationMetadata>,
