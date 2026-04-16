@@ -1,3 +1,34 @@
+## Release [v8.1.4](https://github.com/sourcefuse/loopback4-authorization/compare/v8.1.3..v8.1.4) April 16, 2026
+Welcome to the April 16, 2026 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/) :- [chore(deps): upgraded to latest dependencies ](https://github.com/sourcefuse/loopback4-authorization/commit/87e898011083fb0a6e3407cc40b19ffabbe97621) was commited on April 16, 2026 by [Vinay Gupta](mailto:vinay.gupta@sourcefuse.com)
+    
+      - * chore(deps): upgraded to latest dependencies
+      
+      - upgraded to latest dependencies
+      
+      - GH-161
+      
+      - * chore(deps): comment resolved
+      
+      - comment resolved
+      
+      - GH-161
+      
+      - * chore(deps): upgraded to latest dependencies, comment resolved
+      
+      - upgraded to latest dependencies, comment resolved
+      
+      - Gh-161
+      
+      - ---------
+      
+      - Co-authored-by: yeshamavani &lt;83634146+yeshamavani@users.noreply.github.com&gt;
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v8.1.3](https://github.com/sourcefuse/loopback4-authorization/compare/v8.1.2..v8.1.3) April 16, 2026
 Welcome to the April 16, 2026 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
