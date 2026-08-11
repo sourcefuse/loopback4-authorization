@@ -1,3 +1,16 @@
+## Release [v9.0.1](https://github.com/sourcefuse/loopback4-authorization/compare/v9.0.0..v9.0.1) August 11, 2026
+Welcome to the August 11, 2026 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-authorization/issues/165) :- [chore(deps): upgrade undici fixing five security advisories ](https://github.com/sourcefuse/loopback4-authorization/commit/87a04ee1c627526d47715731c89c15c3888fc452) was commited on August 11, 2026 by [Piyush Singh Gaur](mailto:piyush.singh@sourcefuse.com)
+    
+      - upgrade undici fixing five security advisories
+      
+      - GH-165
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v9.0.0](https://github.com/sourcefuse/loopback4-authorization/compare/v8.1.5..v9.0.0) June 16, 2026
 Welcome to the June 16, 2026 release of loopback4-authorization. There are many updates in this version that we hope you will like, the key highlights include:
 
