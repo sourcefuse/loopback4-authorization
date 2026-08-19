@@ -14,7 +14,7 @@ jobs:
     # environment: production  # Uncomment if you set an environment name in npm trusted publisher settings
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           # fetch-depth is necessary to get all tags
           # otherwise lerna can't detect the changes and will end up bumping the versions for all packages
@@ -22,9 +22,9 @@ jobs:
           token: ${{ secrets.RELEASE_COMMIT_GH_PAT }}
 
       - name: Setup Node
-        uses: actions/setup-node@v4  # UPDATED to v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '22'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
           always-auth: false  # important for trusted publishing
 
